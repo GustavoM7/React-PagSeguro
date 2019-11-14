@@ -10,7 +10,8 @@ class App extends Component{
     return (
     <BrowserRouter>
       <Switch>
-        <Route exact path={"/" || "/Home"} component={Home}/>
+        <Route exact path={"/"} component={Home}/>
+        <Route exact path={"/home"} component={Home}/>
         <Route exact path={"/Checkout"} component={Form}/>
         <Route component={NotFound}/>
       </Switch>

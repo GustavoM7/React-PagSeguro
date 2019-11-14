@@ -8,7 +8,6 @@
 
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -17,6 +16,41 @@
   color: white;
 }
 
+.Full-screen{
+  min-height: 100vh;
+}
+
+.Half-screen{
+  min-height: 50vh;
+}
+
 .App-link {
   color: #09d3ac;
+}
+
+hr {
+  min-width: 100vh;
+  margin: 50px;
+  border-width: 0.5px;
+  border-color: lightgray;
+}
+
+.App form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+}
+
+.App input{
+  border: none;
+  border-bottom: 2px solid #09d3ac;
+  width: 60%;
+  padding: 12px 20px;
+}
+
+.App form label{
+  font-size: calc(2px + 2vmin);
+  margin-right: 60%;
 }
