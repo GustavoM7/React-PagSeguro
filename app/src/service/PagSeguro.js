@@ -4,10 +4,9 @@ const callPagSeguro = (carrinho, comprador, frete) =>{
     //Configurações do vendedor
     pag = new pagseguro({
         email: 'gustavosmarquesf@gmail.com',
-        token: 'XXX',
+        token: '695040B1D32F4F008D776C6A9032CB3A',
         mode : 'sandbox',
     });
-
 
     //Configurando moeda e gerando referência da compra
     pag.currency('BRL');

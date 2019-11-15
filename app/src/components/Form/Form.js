@@ -1,4 +1,6 @@
 import React, {Component} from "react";
+import Produtos from "../../service/Dados";
+import callPagSeguro from "../../service/PagSeguro";
 
 class Form extends Component{
     state = {
@@ -6,7 +8,7 @@ class Form extends Component{
 
       //Dados do comprador:
       name: "Teste",
-      email: "teste@teste.com",
+      email: "teste@sandbox.pagseguro.com.br",
       phoneAreaCode: "51",
       phoneNumber: "00000000",
 
@@ -24,9 +26,56 @@ class Form extends Component{
     }
 
     handleInput = (e) =>{
-        this.setState({
-            [e.target.name]: e.target.value
-        })
+      this.setState({
+          [e.target.name]: e.target.value
+      })
+    }
+
+    submit = async() => {
+      const st = this.state;
+
+      if(st.carrinho.length === 0) alert("O Carrinho está vazio...");
+      else if(st.name &&
+        st.email &&
+        st.phoneAreaCode &&
+        st.phoneNumber &&
+        st.street &&
+        st.number &&
+        st.district &&
+        st.postalCode &&
+        st.city &&
+        st.state &&
+        st.country){
+          let comprador = {
+            name: st.name,
+            email: st.email,
+            phoneAreaCode: st.phoneAreaCode,
+            phoneNumber: st.phoneNumber,
+          }
+
+          let frete = {
+            type: 1,
+            street: st.street,
+            number: st.number,
+            complement: st.complement,
+            district: st.district,
+            postalCode: st.postalCode,
+            city: st.city,
+            state: st.state,
+            country: st.country,
+          }
+
+          console.log("processando...")
+
+          let res = await callPagSeguro(this.state.carrinho, comprador, frete);
+          console.log(res);
+        }
+
+        else alert("Preencha todos os dados!");
+    }
+
+    componentDidMount(){
+      this.setState({carrinho: Produtos});
     }
 
     render(){
@@ -76,6 +125,8 @@ class Form extends Component{
 
             <label>País:</label>
             <input name="country" value={this.state.country} onChange={this.handleInput}/>
+
+            <button type="button" onClick={() => this.submit()}>confirmar</button>
 
           </form>
         </div>

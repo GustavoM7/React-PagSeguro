@@ -6,6 +6,14 @@ import NotFound from "./components/NotFound/NotFound";
 import './App.css';
 
 class App extends Component{
+  componentDidMount(){
+    /*let express = require('express')
+    let cors = require('cors')
+    let app = express()
+
+    app.use(cors())*/
+  }
+
   render(){
     return (
     <BrowserRouter>
