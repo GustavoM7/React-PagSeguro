@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import Produtos from "../../service/Dados";
-import callPagSeguro from "../../service/PagSeguro";
+import api from "../../service/Api";
 
 class Form extends Component{
     state = {
@@ -19,8 +19,8 @@ class Form extends Component{
       complement: "Complemento teste",
       district: "Bairro teste",
       postalCode: "00000-00",
-      city: "Cidade teste",
-      state: "Estado teste",
+      city: "São Paulo",
+      state: "SP",
       country: "País teste",
 
     }
@@ -31,7 +31,7 @@ class Form extends Component{
       })
     }
 
-    submit = async() => {
+    submit = () => {
       const st = this.state;
 
       if(st.carrinho.length === 0) alert("O Carrinho está vazio...");
@@ -46,11 +46,15 @@ class Form extends Component{
         st.city &&
         st.state &&
         st.country){
+
+          let ref = Math.random() * 10000;
+
           let comprador = {
             name: st.name,
             email: st.email,
             phoneAreaCode: st.phoneAreaCode,
             phoneNumber: st.phoneNumber,
+            ref: ref,
           }
 
           let frete = {
@@ -67,8 +71,12 @@ class Form extends Component{
 
           console.log("processando...")
 
-          let res = await callPagSeguro(this.state.carrinho, comprador, frete);
-          console.log(res);
+          let req = {carrinho: Produtos, comprador: comprador, frete: frete};
+
+          api.post("/pagseguro", req).then((res) => {
+            console.log(res.data);
+            //window.location.href = 'https://sandbox.pagseguro.uol.com.br/v2/checkout/payment.html?code=teste2'
+          }).catch((e) => {console.log(e)});
         }
 
         else alert("Preencha todos os dados!");

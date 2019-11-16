@@ -1,4 +1,4 @@
-const callPagSeguro = (carrinho, comprador, frete) =>{
+const PagSeguroFunc = (carrinho, comprador, frete) =>{
     let pag, pagseguro;
     pagseguro = require('pagseguro');
     //Configurações do vendedor
@@ -53,9 +53,9 @@ const callPagSeguro = (carrinho, comprador, frete) =>{
         if (err) {
             return err;
         }
-        return res;
+        return {res: res, ref:ref};
     });
 
 }
 
-export default callPagSeguro;
+export default PagSeguroFunc;
