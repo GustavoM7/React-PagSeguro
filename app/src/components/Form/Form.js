@@ -7,22 +7,21 @@ class Form extends Component{
       carrinho: [],
 
       //Dados do comprador:
-      name: "Teste",
-      email: "teste@sandbox.pagseguro.com.br",
+      name: "Gustavo Marques",
+      email: "c13823858083569199133@sandbox.pagseguro.com.br",
       phoneAreaCode: "51",
-      phoneNumber: "00000000",
+      phoneNumber: "88888888",
 
       //Dados do frete:
       type: 1,
       street: "Rua teste",
-      number: "000",
+      number: "41",
       complement: "Complemento teste",
       district: "Bairro teste",
-      postalCode: "00000-00",
+      postalCode: "01452002",
       city: "São Paulo",
       state: "SP",
-      country: "País teste",
-
+      country: "BRA",
     }
 
     handleInput = (e) =>{
@@ -75,7 +74,9 @@ class Form extends Component{
 
           api.post("/pagseguro", req).then((res) => {
             console.log(res.data);
-            //window.location.href = 'https://sandbox.pagseguro.uol.com.br/v2/checkout/payment.html?code=teste2'
+            let redirectKey = res.data.checkout.code._text;
+            alert("Você será redirecionado para finalizar o pagamento!");
+            window.location.href = 'https://sandbox.pagseguro.uol.com.br/v2/checkout/payment.html?code='+redirectKey;
           }).catch((e) => {console.log(e)});
         }
 
