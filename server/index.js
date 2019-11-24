@@ -75,7 +75,6 @@ app.post('/pagseguro', function (req, res){
   console.log("Recebendo chave para sessão de checkout de direcionamento");
 
   pag.send(function(err, pgres){
-    let convert = require('xml-js');
 
     if (err) {
       //Convertendo resposta xml para json
