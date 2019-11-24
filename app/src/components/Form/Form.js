@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import Produtos from "../../service/Dados";
 import api from "../../service/Api";
+import {Link} from "react-router-dom";
 
 class Form extends Component{
     state = {
@@ -92,50 +93,68 @@ class Form extends Component{
         <div className="App">
           <header className="App-header Half-screen">
               <h1>FORMULÁRIO DE CHECKOUT</h1>
-              <p>Preencha abaixo para simular uma compra com PagSeguro</p>
+              <p>Preencha abaixo para simular uma compra com <em>PagSeguro</em></p>
+              <Link to="/home" className="App-link">Tela inicial</Link>
           </header>
           <form>
-            <h3>Dados do comprador</h3>
-            <label>Nome:</label>
-            <input name="name" value={this.state.name} onChange={this.handleInput}/>
+            <h3>DADOS DO COMPRADOR</h3>
+            <section>
+            <div className="form-row">
+              <label>NOME:</label>
+              <input name="name" value={this.state.name} onChange={this.handleInput}/>
+            </div>
 
-            <label>Email:</label>
-            <input name="email" value={this.state.email} onChange={this.handleInput}/>
+            <div className="form-row">
+              <label>EMAIL:</label>
+              <input name="email" value={this.state.email} onChange={this.handleInput}/>
+            </div>
 
-            <label>DDD:</label>
-            <input name="phoneAreaCode" value={this.state.phoneAreaCode} onChange={this.handleInput}/>
+            <div className="form-row">
+              <label>DDD:</label>
+              <input className="short-input" name="phoneAreaCode" value={this.state.phoneAreaCode} onChange={this.handleInput}/>
 
-            <label>Telefone:</label>
-            <input name="phoneNumber" value={this.state.phoneNumber} onChange={this.handleInput}/>
+              <label>TELEFONE:</label>
+              <input name="phoneNumber" value={this.state.phoneNumber} onChange={this.handleInput}/>
+            </div>
+            </section>
 
             <hr/>
 
-            <h3>Dados do frete</h3>
-            <label>Rua:</label>
-            <input name="street" value={this.state.street} onChange={this.handleInput}/>
+            <h3>DADOS DO FRETE</h3>
+            <section>
+            <div className="form-row">
+              <label>RUA:</label>
+              <input name="street" value={this.state.street} onChange={this.handleInput}/>
 
-            <label>Número:</label>
-            <input name="number" value={this.state.number} onChange={this.handleInput}/>
+              <label>NÚMERO:</label>
+              <input className="short-input" name="number" value={this.state.number} onChange={this.handleInput}/>
 
-            <label>Complemento:</label>
-            <input name="complement" value={this.state.complement} onChange={this.handleInput}/>
+              <label>COMPLEMENTO:</label>
+              <input name="complement" value={this.state.complement} onChange={this.handleInput}/>
+            </div>
 
-            <label>Bairro:</label>
-            <input name="district" value={this.state.district} onChange={this.handleInput}/>
+            <div className="form-row">
+              <label>BAIRRO:</label>
+              <input name="district" value={this.state.district} onChange={this.handleInput}/>
 
-            <label>CEP:</label>
-            <input name="postalCode" value={this.state.postalCode} onChange={this.handleInput}/>
+              <label>CEP:</label>
+              <input className="short-input" name="postalCode" value={this.state.postalCode} onChange={this.handleInput}/>
+            </div>
+            
+            <div className="form-row">
+              <label>CIDADE:</label>
+              <input name="city" value={this.state.city} onChange={this.handleInput}/>
 
-            <label>Cidade:</label>
-            <input name="city" value={this.state.city} onChange={this.handleInput}/>
+              <label>ESTADO:</label>
+              <input name="state" value={this.state.state} onChange={this.handleInput}/>
 
-            <label>Estado:</label>
-            <input name="state" value={this.state.state} onChange={this.handleInput}/>
+              <label>PAÍS:</label>
+              <input name="country" value={this.state.country} onChange={this.handleInput}/>
+            </div>
 
-            <label>País:</label>
-            <input name="country" value={this.state.country} onChange={this.handleInput}/>
-
-            <button type="button" onClick={() => this.submit()}>confirmar</button>
+            </section>
+            <hr/>
+            <button type="button" onClick={() => this.submit()}>CONFIRMAR</button>
 
           </form>
         </div>

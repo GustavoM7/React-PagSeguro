@@ -30,7 +30,7 @@
 
 hr {
   min-width: 100vh;
-  margin: 50px;
+  margin: 30px;
   border-width: 0.5px;
   border-color: lightgray;
 }
@@ -43,14 +43,56 @@ hr {
   font-size: calc(10px + 2vmin);
 }
 
+.App section{
+  max-width: 90%;
+  min-width: 60%;
+}
+
 .App input{
   border: none;
-  border-bottom: 2px solid #09d3ac;
-  width: 60%;
+  border-bottom: 2px solid #282c34;
   padding: 12px 20px;
+  width: 100%;
+  font-size: calc(2px + 2vmin);
+}
+
+.App input:focus{
+  border-bottom: 2px solid #09d3ac;
+}
+
+.App button {
+  background-color: #282c34;
+  width: 100px;
+  height: 40px;
+  border: none;
+  border-radius: 15px;
+  margin: 20px 0 20px 0;
+  color: white;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+
+.App button:hover{
+  background-color: #708090;
+}
+
+.App button:focus{
+  background-color: #09d3ac;
 }
 
 .App form label{
-  font-size: calc(2px + 2vmin);
-  margin-right: 60%;
+  font-size: calc(1px + 2vmin);
+  margin: auto auto auto 18px;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10px;
+}
+
+.short-input{
+  max-width: 10%;
 }
