@@ -3,7 +3,7 @@ import Produtos from "../../service/Dados";
 import api from "../../service/Api";
 import {Link} from "react-router-dom";
 
-class Form extends Component{
+class Checkout extends Component{
     state = {
       carrinho: [],
 
@@ -162,4 +162,4 @@ class Form extends Component{
     }
 }
 
-export default Form;
+export default Checkout;

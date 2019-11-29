@@ -1,8 +1,9 @@
 import React from 'react';
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import Home from "./components/Home/Home";
-import Form from "./components/Form/Form";
 import NotFound from "./components/NotFound/NotFound";
+import Checkout from './components/Checkout/Checkout';
+import Auth from './components/Auth/Auth';
 import './App.css';
 
 const App = () =>{
@@ -11,7 +12,8 @@ const App = () =>{
       <Switch>
         <Route exact path={"/"} component={Home}/>
         <Route exact path={"/home"} component={Home}/>
-        <Route exact path={"/Checkout"} component={Form}/>
+        <Route exact path={"/authenticate"} component={Auth}/>
+        <Route exact path={"/checkout"} component={Checkout}/>
         <Route component={NotFound}/>
       </Switch>
     </BrowserRouter>

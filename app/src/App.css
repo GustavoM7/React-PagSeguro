@@ -36,6 +36,11 @@
   color: #09d3ac;
 }
 
+.App-link:hover{
+  cursor: pointer;
+  color: #708090;
+}
+
 hr {
   min-width: 100vh;
   margin: 30px;
