@@ -8,7 +8,12 @@ const Home = () =>{
       <header className="App-header Full-screen">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-            <Link to="/checkout" className="App-link">Click aqui para fazer um teste</Link>
+          <ul className="App-header-menu">
+            <li><Link to="/authenticate" className="App-link">Simular login/cadastro</Link></li>
+            <li><Link to="/cart" className="App-link">Simular carrinho</Link></li>
+            <li><Link to="/checkout" className="App-link">Simular checkout</Link></li>
+            <li><Link to="/notifications" className="App-link">Notifição de simulações</Link></li>
+          </ul>
         </p>
       </header>
     </div>

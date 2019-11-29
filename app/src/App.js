@@ -1,20 +1,11 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import Home from "./components/Home/Home";
 import Form from "./components/Form/Form";
 import NotFound from "./components/NotFound/NotFound";
 import './App.css';
 
-class App extends Component{
-  componentDidMount(){
-    /*let express = require('express')
-    let cors = require('cors')
-    let app = express()
-
-    app.use(cors())*/
-  }
-
-  render(){
+const App = () =>{
     return (
     <BrowserRouter>
       <Switch>
@@ -25,7 +16,6 @@ class App extends Component{
       </Switch>
     </BrowserRouter>
   );
-  }
 }
 
 export default App;
