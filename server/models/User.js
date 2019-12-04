@@ -19,7 +19,7 @@ module.exports = db.sequelize.define(
       type: Sequelize.INTEGER,
     },
     street: {
-      type: Sequilize.STRING
+      type: Sequelize.STRING
     },
     number: {
       type: Sequelize.INTEGER,
@@ -31,6 +31,9 @@ module.exports = db.sequelize.define(
       type: Sequelize.STRING,
     },
     postal_code: {
+      type: Sequelize.STRING,
+    },
+    city: {
       type: Sequelize.STRING,
     },
     state: {
