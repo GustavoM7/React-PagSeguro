@@ -6,8 +6,9 @@ const Users = require('./routes/Users.js');
 const PagSeguro = require('./routes/PagSeguro.js');
 
 routes.get('/', Home.init);
-routes.get('/Users', Users.getAll)
+routes.get('/Users', Users.getAll);
 
+routes.post('/Users', Users.create);
 routes.post('/pagseguro', PagSeguro.sendCheckout);
 
 module.exports = routes;
