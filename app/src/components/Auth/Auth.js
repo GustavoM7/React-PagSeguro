@@ -3,7 +3,27 @@ import {Link} from "react-router-dom";
 
 class Auth extends Component{
   state = {
-    loginForm: true,
+    loginForm: true, //Indica qual formulário deve ser mostrado
+
+    //dados de cadastro
+    name: "",
+    email: "",
+    phoneAreaCode: "",
+    phoneNumber: "",
+    street: "",
+    number: "",
+    complement: "",
+    district: "",
+    postalCode: "",
+    city: "",
+    state: "",
+    country: "",
+    password: "",
+    passwordConfirm: "",
+
+    //dados de login
+    loginEmail: "",
+    loginPassword: "",
   }
 
   changeForrms = () =>{
@@ -119,11 +139,11 @@ const FormLogin = (props) =>{
       <section>
         <div className="form-row">
           <label>EMAIL:</label>
-          <input name="name" type="email" value={props.state.email} onChange={props.handleInput}/>
+          <input name="name" type="loginEmail" value={props.state.loginEmail} onChange={props.handleInput}/>
         </div>
         <div className="form-row">
           <label>SENHA:</label>
-          <input name="name" type="password" value={props.state.email} onChange={props.handleInput}/>
+          <input name="name" type="loginPassword" value={props.state.loginPassword} onChange={props.handleInput}/>
         </div>
       </section>
 
