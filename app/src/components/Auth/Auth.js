@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import {Link} from "react-router-dom";
+import api from "../../service/Api";
 
 class Auth extends Component{
   state = {
@@ -41,7 +42,55 @@ class Auth extends Component{
   }
 
   submit = () =>{
-    console.log("cadastrando...")
+    const st = this.state;
+    if(st.name && st.email && st.password && st.passwordConfirm){
+      if(st.password !== st.passwordConfirm){
+        alert("Senha em conflito com confirmação!");
+      } else {
+        let newUser = {
+          name: st.name,
+          email: st.email,
+          phone_code: st.phoneAreaCode,
+          phoneNumber: st.phoneNumber,
+          street: st.street,
+          number: st.number,
+          complement: st.complement,
+          district: st.district,
+          postal_code: st.postalCode,
+          city: st.city,
+          state: st.state,
+          country: st.country,
+          password: st.password,
+        };
+
+        console.log("Cadastrando novo cliente...")
+        api.post('/Users', newUser).then(res => {
+          console.log(res);
+          alert("Novo cliente cadastrado!");
+          this.setState({
+            name: "",
+            email: "",
+            phoneAreaCode: "",
+            phoneNumber: "",
+            street: "",
+            number: "",
+            complement: "",
+            district: "",
+            postalCode: "",
+            city: "",
+            state: "",
+            country: "",
+            password: "",
+            passwordConfirm: "",        
+          })
+        }).catch(e => {
+          alert("Erro inesperado...");
+          console.log(e);
+        })
+      }
+      
+    }
+    else alert("Preencha todos os campos obrigatórios!");
   }
 
   render(){
@@ -73,7 +122,7 @@ const FormNewUser = (props) =>{
       <h3>CADASTRAR NOVO CLIENTE</h3>
         <section>
         <div className="form-row">
-          <label>NOME:</label>
+          <label>NOME<em>*</em>:</label>
           <input name="name" value={props.state.name} onChange={props.handleInput}/>
         </div>
 
@@ -89,7 +138,7 @@ const FormNewUser = (props) =>{
           <input name="street" value={props.state.street} onChange={props.handleInput}/>
 
           <label>NÚMERO:</label>
-          <input className="short-input" name="number" value={props.state.number} onChange={props.handleInput}/>
+          <input className="short-input" name="number" type="number" value={props.state.number} onChange={props.handleInput}/>
 
           <label>COMPLEMENTO:</label>
           <input name="complement" value={props.state.complement} onChange={props.handleInput}/>
@@ -115,18 +164,19 @@ const FormNewUser = (props) =>{
         </div>
 
         <div className="form-row">
-          <label>EMAIL:</label>
+          <label>EMAIL<em>*</em>:</label>
           <input name="email" type="email" value={props.state.email} onChange={props.handleInput}/>
         </div>
 
         <div className="form-row">
-          <label>SENHA:</label>
+          <label>SENHA<em>*</em>:</label>
           <input name="password" type="password" value={props.state.password} onChange={props.handleInput}/>
-          <label>CONFIRMAR SENHA:</label>
+          <label>CONFIRMAR SENHA<em>*</em>:</label>
           <input name="passwordConfirm" type="password" value={props.state.passwordConfirm} onChange={props.handleInput}/>
         </div>
 
         </section>
+        <em>* Obrigatórios</em>
         <button type="button" onClick={() => props.submit()}>ENVIAR</button>
     </form>
   )
