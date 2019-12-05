@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {Link} from "react-router-dom";
 import api from "../../service/Api";
+import Popup from "../Popup/Popup";
 
 class Auth extends Component{
   state = {
@@ -25,9 +26,15 @@ class Auth extends Component{
     //dados de login
     loginEmail: "",
     loginPassword: "",
+
+    //Estados de msg
+    popText: "",
+    popWarning: false,
+    popVisibility: false,
+    popPermanent: false,
   }
 
-  changeForrms = () =>{
+  changeForms = () =>{
     this.setState({loginForm: this.state.loginForm ? false : true});
   }
 
@@ -37,21 +44,42 @@ class Auth extends Component{
     })
   }
 
+  callPopup = (text, warning, visibility, permanent) =>{
+    this.setState({
+      popText: text,
+      popWarning: warning,
+      popVisibility: visibility,
+      popPermanent: permanent,
+    })
+  }
+
+  closePopup = () =>{
+    this.setState({
+      popText: "",
+      popWarning: false,
+      popVisibility: false,
+      popPermanent: false,
+    })
+  }
+
   login = () =>{
-    console.log("Login...")
+    let st = this.state;
+    if(st.loginPassword && st.loginEmail){
+      this.callPopup("Realizado login...", false, true, true);
+    } else this.callPopup("Preencha todos os campos!", true, true, false);
   }
 
   submit = () =>{
-    const st = this.state;
+    let st = this.state;
     if(st.name && st.email && st.password && st.passwordConfirm){
       if(st.password !== st.passwordConfirm){
-        alert("Senha em conflito com confirmação!");
+        this.callPopup("Senhas não coincidem...", true, true, false);
       } else {
         let newUser = {
           name: st.name,
           email: st.email,
           phone_code: st.phoneAreaCode,
-          phoneNumber: st.phoneNumber,
+          phone: st.phoneNumber,
           street: st.street,
           number: st.number,
           complement: st.complement,
@@ -63,10 +91,10 @@ class Auth extends Component{
           password: st.password,
         };
 
-        console.log("Cadastrando novo cliente...")
+        this.callPopup("Cadastrando dados...", false, true, true);
         api.post('/Users', newUser).then(res => {
           console.log(res);
-          alert("Novo cliente cadastrado!");
+          this.callPopup("Novo cliente cadastrado!", false, true, false);
           this.setState({
             name: "",
             email: "",
@@ -90,11 +118,11 @@ class Auth extends Component{
       }
       
     }
-    else alert("Preencha todos os campos obrigatórios!");
+    else this.callPopup("Preencha todos os campos obrigatórios!", true, true, false);;
   }
 
   render(){
-    const loginForm = this.state.loginForm;
+    let st = this.state;
 
     return(
     <div className="App">
@@ -102,13 +130,20 @@ class Auth extends Component{
         <h1>Simulação de autenticação</h1>
         <p>Realize login ou cadastre um cliente para efeito de simulação</p>
         <p><Link to="/home" className="App-link">Tela inicial</Link></p>
-        <p className="App-link" onClick={() => this.changeForrms()}>
-            {loginForm ? "Cadastrar cliente" : "Login"}
+        <p className="App-link" onClick={() => this.changeForms()}>
+            {st.loginForm ? "Cadastrar cliente" : "Login"}
         </p>
       </header>
-      {loginForm ? 
-        <FormLogin state={this.state} handleInput={this.handleInput} login={this.login} /> 
-        : <FormNewUser state={this.state} handleInput={this.handleInput} submit={this.submit} /> }
+      {st.loginForm ? 
+        <FormLogin state={st} handleInput={this.handleInput} login={this.login} /> 
+        : <FormNewUser state={st} handleInput={this.handleInput} submit={this.submit} /> }
+      <Popup 
+      warning={st.popWarning}
+      visible={st.popVisibility}
+      permanent={st.popPermanent}
+      onClose={this.closePopup}>
+        {st.popText}
+      </Popup>
     </div>
     )
   }
@@ -189,11 +224,11 @@ const FormLogin = (props) =>{
       <section>
         <div className="form-row">
           <label>EMAIL:</label>
-          <input name="name" type="loginEmail" value={props.state.loginEmail} onChange={props.handleInput}/>
+          <input name="loginEmail" type="email" value={props.state.loginEmail} onChange={props.handleInput}/>
         </div>
         <div className="form-row">
           <label>SENHA:</label>
-          <input name="name" type="loginPassword" value={props.state.loginPassword} onChange={props.handleInput}/>
+          <input name="loginPassword" type="password" value={props.state.loginPassword} onChange={props.handleInput}/>
         </div>
       </section>
 
