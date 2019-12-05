@@ -1,0 +1,31 @@
+.Popup{
+  position: fixed;
+  bottom: 15px;
+  left: 17px;
+  min-width: 20%;
+  padding: 8px;
+  border-style: outset;
+  border-width: 2px;
+  border-color: #09d3ac;
+  color: #09d3ac;
+  background-color: #282c34;
+  box-shadow: 1px 1px 1px 1px rgba(0,0,0,.2);
+}
+
+.Popup span{
+  float: right;
+}
+
+.Popup span button{
+  border: none;
+  height: 30px;
+  width: 30px;
+  margin: unset;
+}
+
+.Popup-warning{
+  border-color: #ff3232;
+  color: #ff3232;
+  background-color: #282c34;
+  box-shadow: 1px 1px 1px 1px rgba(0,0,0,.2);
+}
