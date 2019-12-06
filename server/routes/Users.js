@@ -37,13 +37,46 @@ module.exports = {
 
         User.create(newUser).then(user => {
           console.log("Novo usuário criado, id:", user.id);
-          res.send({msg: "sucess", code: 200});
+          res.send({msg: "Sucess", code: 200});
 
         }).catch(error => {
           res.send(error);
 
         });
       }
+    }).catch(error => {
+      res.send(error);
     });
-  }
+  },
+
+  delete(req, res){
+    User.findOne({where: {email: req.body.email}}).then(user =>{
+      if(!user){
+        res.send({error: "Usuário não econtrado", code: 404});
+
+      } else {
+        User.destroy({where: {email: req.body.email}}).then(() =>{
+          res.send({msg: "Sucess", code: 200});
+        }).catch(error => {
+          res.send(error);
+        })
+      }
+    }).catch(error => {res.send(error)});
+  },
+
+  update(req, res){
+    User.findOne({where: {email: req.body.email}}).then(user =>{
+      if(!user){
+        res.send({error: "Usuário não econtrado", code: 404});
+
+      } else {
+        User.update(req.body, {where: {email: req.body.email}}).then(() =>{
+          res.send({msg: "Sucess", code: 200});
+        }).catch(error => {
+          res.send(error);
+        })
+      }
+    }).catch(error => {res.send(error)});
+  },
+
 }
