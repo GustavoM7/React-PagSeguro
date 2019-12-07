@@ -7,8 +7,10 @@ const PagSeguro = require('./routes/PagSeguro.js');
 
 routes.get('/', Home.init);
 routes.get('/Users', Users.getAll);
+routes.get('/Users/Authenticate', Users.authenticate);
 
 routes.post('/Users', Users.create);
+routes.post('/Users/Login', Users.login);
 routes.post('/pagseguro', PagSeguro.sendCheckout);
 
 module.exports = routes;

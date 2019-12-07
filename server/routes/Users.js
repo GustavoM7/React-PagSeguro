@@ -1,5 +1,6 @@
 const User = require('../models/User.js');
-const bcrypt = require ('bcryptjs');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 process.env.SECRET_KEY = 'secret';
 
@@ -26,7 +27,8 @@ module.exports = {
         newUser.password = hash;
 
         User.create(newUser).then(user => {
-          console.log("Novo usuário criado, id:", user.id);
+          let token = jwt.sign(user.dataValues, process.env.SECRET_KEY, {expiresIn: 1440});
+          console.log("Novo usuário criado, token:", token);
           res.send({msg: "Sucess", code: 200});
 
         }).catch(error => {
@@ -37,6 +39,34 @@ module.exports = {
     }).catch(error => {
       res.send("erro:" + error);
     });
+  },
+
+  login(req, res){
+    User.findOne({where: {email: req.body.email}}).then(user => {
+      if(!user){
+        res.send({error: "Usuário não econtrado", code: 404});
+
+      } else if(!bcrypt.compareSync(req.body.password, user.password)){
+        res.send({error: "Senha incorreta", code: 409});
+      } else {
+        let token = jwt.sign(user.dataValues, process.env.SECRET_KEY, {expiresIn: 1440});
+        res.jason({token: token});
+
+      }
+    })
+  },
+
+  authenticate(req, res){
+    let decode = jwt.verify(req.headers['authotization'], process.env.SECRET_KEY);
+
+    User.findOne({where: {id: decode.id}}).then(user =>{
+      if(user) res.jason(user);
+      else res.send({error: "Usuário não econtrado", code: 404});
+      
+    }).catch(err => {
+      res.send('error:' + err);
+
+    })
   },
 
   delete(req, res){
