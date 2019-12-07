@@ -98,11 +98,6 @@ hr {
   margin: auto auto auto 18px;
 }
 
-.App form em{
-  font-size: calc(1px + 2vmin);
-  color: red
-}
-
 .form-row {
   display: flex;
   flex-direction: row;

@@ -10,16 +10,7 @@ class Auth extends Component{
     //dados de cadastro
     name: "",
     email: "",
-    phoneAreaCode: "",
-    phoneNumber: "",
-    street: "",
-    number: "",
-    complement: "",
-    district: "",
-    postalCode: "",
-    city: "",
-    state: "",
-    country: "",
+    emailConfirm: "",
     password: "",
     passwordConfirm: "",
 
@@ -62,58 +53,64 @@ class Auth extends Component{
     })
   }
 
+  verifyEmail = (emailString) => {
+    const userString = emailString.substring(0, emailString.indexOf("@"));
+    const dom = emailString.substring(emailString.indexOf("@")+ 1, emailString.length);
+
+    if ((userString.length >=1) && (dom.length >=3) && (userString.search("@")===-1) && (dom.search("@")===-1) && (userString.search(" ")===-1) && (dom.search(" ")===-1) && (dom.search(".")!==-1) &&(dom.indexOf(".") >=1) && (dom.lastIndexOf(".") < dom.length - 1)) {
+      return true;
+    } else return false;
+  }
+
   login = () =>{
     let st = this.state;
     if(st.loginPassword && st.loginEmail){
-      this.callPopup("Realizado login...", false, true, true);
+      if(!this.verifyEmail(st.loginEmail)) this.callPopup("Formato de email incorreto!", true, true, false);
+
+      else this.callPopup("Realizado login...", false, true, true);
+
     } else this.callPopup("Preencha todos os campos!", true, true, false);
   }
 
   submit = () =>{
     let st = this.state;
-    if(st.name && st.email && st.password && st.passwordConfirm){
-      if(st.password !== st.passwordConfirm){
-        this.callPopup("Senhas não coincidem...", true, true, false);
-      } else {
+    if(st.name && st.email && st.password && st.passwordConfirm && st.emailConfirm){
+      if(!this.verifyEmail(st.email)) this.callPopup("Formato de email incorreto!", true, true, false);
+
+      else if(st.password.length < 6) this.callPopup("A senha deve ter no mínimo 6 caracteres!", true, true, false);
+
+      else if(st.email !== st.emailConfirm) this.callPopup("Emails não coincidem...", true, true, false);
+
+      else if(st.password !== st.passwordConfirm) this.callPopup("Senhas não coincidem...", true, true, false);
+
+      else {
         let newUser = {
           name: st.name,
           email: st.email,
-          phone_code: st.phoneAreaCode,
-          phone: st.phoneNumber,
-          street: st.street,
-          number: st.number,
-          complement: st.complement,
-          district: st.district,
-          postal_code: st.postalCode,
-          city: st.city,
-          state: st.state,
-          country: st.country,
           password: st.password,
         };
 
-        this.callPopup("Cadastrando dados...", false, true, true);
+        this.callPopup("Verificando dados...", false, true, true);
         api.post('/Users', newUser).then(res => {
           console.log(res);
-          this.callPopup("Novo cliente cadastrado!", false, true, false);
-          this.setState({
-            name: "",
-            email: "",
-            phoneAreaCode: "",
-            phoneNumber: "",
-            street: "",
-            number: "",
-            complement: "",
-            district: "",
-            postalCode: "",
-            city: "",
-            state: "",
-            country: "",
-            password: "",
-            passwordConfirm: "",        
-          })
+          if(res.data.code === 200){
+            this.callPopup("Novo cliente cadastrado!", false, true, false);
+            this.setState({
+              name: "",
+              email: "",
+              emailConfirm: "",
+              password: "",
+              passwordConfirm: "",        
+            });
+
+          } else if(res.data.code === 409){
+            this.callPopup("Este email já está cadastrado!", true, true, false);
+
+          }
         }).catch(e => {
-          alert("Erro inesperado...");
+          this.callPopup("Erro... Tente mais tarde!", true, true, false);
           console.log(e);
+
         })
       }
       
@@ -157,61 +154,25 @@ const FormNewUser = (props) =>{
       <h3>CADASTRAR NOVO CLIENTE</h3>
         <section>
         <div className="form-row">
-          <label>NOME<em>*</em>:</label>
+          <label>NOME:</label>
           <input name="name" value={props.state.name} onChange={props.handleInput}/>
         </div>
 
         <div className="form-row">
-          <label>DDD:</label>
-          <input className="short-input" name="phoneAreaCode" value={props.state.phoneAreaCode} onChange={props.handleInput}/>
-          <label>TELEFONE:</label>
-          <input name="phoneNumber" value={props.state.phoneNumber} onChange={props.handleInput}/>
-        </div>
-
-        <div className="form-row">
-          <label>RUA:</label>
-          <input name="street" value={props.state.street} onChange={props.handleInput}/>
-
-          <label>NÚMERO:</label>
-          <input className="short-input" name="number" type="number" value={props.state.number} onChange={props.handleInput}/>
-
-          <label>COMPLEMENTO:</label>
-          <input name="complement" value={props.state.complement} onChange={props.handleInput}/>
-        </div>
-
-        <div className="form-row">
-          <label>BAIRRO:</label>
-          <input name="district" value={props.state.district} onChange={props.handleInput}/>
-
-          <label>CEP:</label>
-          <input className="short-input" name="postalCode" value={props.state.postalCode} onChange={props.handleInput}/>
-        </div>
-            
-        <div className="form-row">
-          <label>CIDADE:</label>
-          <input name="city" value={props.state.city} onChange={props.handleInput}/>
-
-          <label>ESTADO:</label>
-          <input name="state" value={props.state.state} onChange={props.handleInput}/>
-
-          <label>PAÍS:</label>
-          <input name="country" value={props.state.country} onChange={props.handleInput}/>
-        </div>
-
-        <div className="form-row">
-          <label>EMAIL<em>*</em>:</label>
+          <label>EMAIL:</label>
+          <input name="emailConfirm" type="email" value={props.state.emailConfirm} onChange={props.handleInput}/>
+          <label>CONFITMAR EMAIL:</label>
           <input name="email" type="email" value={props.state.email} onChange={props.handleInput}/>
         </div>
 
         <div className="form-row">
-          <label>SENHA<em>*</em>:</label>
+          <label>SENHA:</label>
           <input name="password" type="password" value={props.state.password} onChange={props.handleInput}/>
-          <label>CONFIRMAR SENHA<em>*</em>:</label>
+          <label>CONFIRMAR SENHA:</label>
           <input name="passwordConfirm" type="password" value={props.state.passwordConfirm} onChange={props.handleInput}/>
         </div>
 
         </section>
-        <em>* Obrigatórios</em>
         <button type="button" onClick={() => props.submit()}>ENVIAR</button>
     </form>
   )
