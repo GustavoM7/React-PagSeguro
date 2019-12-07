@@ -63,13 +63,48 @@ class Auth extends Component{
   }
 
   login = () =>{
-    let st = this.state;
-    if(st.loginPassword && st.loginEmail){
-      if(!this.verifyEmail(st.loginEmail)) this.callPopup("Formato de email incorreto!", true, true, false);
+    const user = {
+      email: this.state.loginEmail,
+      password: this.state.loginPassword,
+    };
 
-      else this.callPopup("Realizado login...", false, true, true);
+    if(user.email && user.password){
+      if(!this.verifyEmail(user.email)) this.callPopup("Formato de email incorreto!", true, true, false);
+
+      else {
+        this.callPopup("Verificando dados...", false, true, true);
+        api.post('/Users/Login', user).then(res => {
+          if(res.data.code === 404){
+            this.callPopup("Email não encontrado!", true, true, false);
+
+          } else if(res.data.code === 409){
+            this.callPopup("Senha incorreta!", true, true, false);
+
+          } else {
+            this.callPopup("Realizando login...", false, true, true);
+            this.authenticate(res.data.token);
+
+          }
+        }).catch(e => {
+          console.log(e);
+          this.callPopup("Erro... Tente mais tarde!", true, true, false);
+
+        });
+      }
 
     } else this.callPopup("Preencha todos os campos!", true, true, false);
+  }
+
+  authenticate = (token) =>{
+    api.post('/Users/Authenticate', {headers: {"Authorization" : token}}).then(res => {
+      if(res.error) this.callPopup("Autenticação expirtada...", true, true, false);
+      else this.callPopup("Autenticado!", false, true, false);
+      
+    }).catch(e => {
+      this.callPopup("Erro... Tente novamente mais tarde.", true, true, false);
+      console.log(e);
+
+    }) 
   }
 
   submit = () =>{

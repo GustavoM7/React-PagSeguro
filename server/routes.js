@@ -11,6 +11,7 @@ routes.get('/Users/Authenticate', Users.authenticate);
 
 routes.post('/Users', Users.create);
 routes.post('/Users/Login', Users.login);
+routes.post('/Users/Authenticate', Users.authenticate);
 routes.post('/pagseguro', PagSeguro.sendCheckout);
 
 module.exports = routes;

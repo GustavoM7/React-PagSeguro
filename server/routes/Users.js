@@ -27,7 +27,7 @@ module.exports = {
         newUser.password = hash;
 
         User.create(newUser).then(user => {
-          let token = jwt.sign(user.dataValues, process.env.SECRET_KEY, {expiresIn: 1440});
+          let token = jwt.sign(user.dataValues, process.env.SECRET_KEY, {expiresIn: '7d'});
           console.log("Novo usuário criado, token:", token);
           res.send({msg: "Sucess", code: 200});
 
@@ -49,24 +49,28 @@ module.exports = {
       } else if(!bcrypt.compareSync(req.body.password, user.password)){
         res.send({error: "Senha incorreta", code: 409});
       } else {
-        let token = jwt.sign(user.dataValues, process.env.SECRET_KEY, {expiresIn: 1440});
-        res.jason({token: token});
+        let token = jwt.sign(user.dataValues, process.env.SECRET_KEY, {expiresIn: '7d'});
+        console.log("Enviando token de autenticação para usuário "+ user.id);
+        res.json({token: token});
 
       }
     })
   },
 
   authenticate(req, res){
-    let decode = jwt.verify(req.headers['authotization'], process.env.SECRET_KEY);
+    jwt.verify(req.body.headers['Authorization'], process.env.SECRET_KEY, (err, decode) => {
+      if(err) res.send({error: "Usuário não econtrado", code: 404});
 
-    User.findOne({where: {id: decode.id}}).then(user =>{
-      if(user) res.jason(user);
-      else res.send({error: "Usuário não econtrado", code: 404});
-      
-    }).catch(err => {
-      res.send('error:' + err);
+      else User.findOne({where: {id: decode.id}}).then(user =>{
+        if(user) res.json(user);
+        else res.send({error: "Usuário não econtrado", code: 404});
+        
+      }).catch(err => {
+        res.send('error:' + err);
 
-    })
+      });
+    });
+    
   },
 
   delete(req, res){
