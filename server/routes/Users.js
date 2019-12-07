@@ -13,16 +13,6 @@ module.exports = {
   create(req, res){
     const newUser = {
       name: req.body.name,
-      phone_code: req.body.phone_code,
-      phone: req.body.phone,
-      street: req.body.street,
-      number: req.body.number,
-      complement: req.body.complement,
-      district: req.body.district,
-      postal_code: req.body.postal_code,
-      city: req.body.city,
-      state: req.body.state,
-      country: req.body.country,
       email: req.body.email,
       password: req.body.password,
     };
@@ -40,12 +30,12 @@ module.exports = {
           res.send({msg: "Sucess", code: 200});
 
         }).catch(error => {
-          res.send(error);
+          res.send("erro:" + error);
 
         });
       }
     }).catch(error => {
-      res.send(error);
+      res.send("erro:" + error);
     });
   },
 
@@ -58,10 +48,10 @@ module.exports = {
         User.destroy({where: {email: req.body.email}}).then(() =>{
           res.send({msg: "Sucess", code: 200});
         }).catch(error => {
-          res.send(error);
+          res.send("erro:" + error);
         })
       }
-    }).catch(error => {res.send(error)});
+    }).catch(error => {res.send("erro:" + error)});
   },
 
   update(req, res){
@@ -73,10 +63,10 @@ module.exports = {
         User.update(req.body, {where: {email: req.body.email}}).then(() =>{
           res.send({msg: "Sucess", code: 200});
         }).catch(error => {
-          res.send(error);
+          res.send("erro:" + error);
         })
       }
-    }).catch(error => {res.send(error)});
+    }).catch(error => {res.send("erro:" + error)});
   },
 
 }
