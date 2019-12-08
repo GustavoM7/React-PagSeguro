@@ -82,7 +82,8 @@ class Auth extends Component{
 
           } else {
             this.callPopup("Realizando login...", false, true, true);
-            this.authenticate(res.data.token);
+            localStorage.setItem('@reactpagseguro/logintoken', res.data.token);
+            window.location.replace('/Cliente');
 
           }
         }).catch(e => {
@@ -151,6 +152,11 @@ class Auth extends Component{
       
     }
     else this.callPopup("Preencha todos os campos obrigatórios!", true, true, false);;
+  }
+
+  componentDidMount(){
+    const loginToken = localStorage.getItem('@reactpagseguro/logintoken');
+    if(loginToken) window.location.replace('/Cliente');
   }
 
   render(){
