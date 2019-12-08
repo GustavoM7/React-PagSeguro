@@ -153,8 +153,8 @@ class Auth extends Component{
     return(
     <div className="App">
       <header className="App-header Half-screen">
-        <h1>Simulação de autenticação</h1>
-        <p>Realize login ou cadastre um cliente para efeito de simulação</p>
+        <h1>Autenticação</h1>
+        <p>Realize login ou cadastre um cliente para acompanhar as simulações</p>
         <p><Link to="/home" className="App-link">Tela inicial</Link></p>
         <p className="App-link" onClick={() => this.changeForms()}>
             {st.loginForm ? "Cadastrar cliente" : "Login"}
