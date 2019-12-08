@@ -39,7 +39,8 @@ class ClientInterface extends Component {
         }
         else{
           this.callPopup("Autenticado!", false, true, false);
-          this.setState({user: res.data});  
+          this.setState({user: res.data}); 
+           
         } 
     
     }).catch(e => {
