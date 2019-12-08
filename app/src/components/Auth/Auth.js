@@ -96,18 +96,6 @@ class Auth extends Component{
     } else this.callPopup("Preencha todos os campos!", true, true, false);
   }
 
-  authenticate = (token) =>{
-    api.post('/Users/Authenticate', {headers: {"Authorization" : token}}).then(res => {
-      if(res.error) this.callPopup("Autenticação expirtada...", true, true, false);
-      else this.callPopup("Autenticado!", false, true, false);
-      
-    }).catch(e => {
-      this.callPopup("Erro... Tente novamente mais tarde.", true, true, false);
-      console.log(e);
-
-    }) 
-  }
-
   submit = () =>{
     let st = this.state;
     if(st.name && st.email && st.password && st.passwordConfirm && st.emailConfirm){
