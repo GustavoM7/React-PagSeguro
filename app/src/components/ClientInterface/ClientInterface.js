@@ -45,6 +45,7 @@ class ClientInterface extends Component {
     
     }).catch(e => {
         console.log(e);
+        this.logout();
 
     }) 
   }

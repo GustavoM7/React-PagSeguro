@@ -2,7 +2,7 @@ import React from 'react';
 import logo from '../logo.svg';
 import {Link} from "react-router-dom";
 
-const Home = () =>{
+const NotFound = () =>{
   return (
     <div className="App">
       <header className="App-header Full-screen">
@@ -14,4 +14,4 @@ const Home = () =>{
   );
 }
 
-export default Home;
+export default NotFound;
