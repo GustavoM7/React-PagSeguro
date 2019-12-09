@@ -2,9 +2,11 @@ import React, {Component} from "react";
 import {Link} from "react-router-dom";
 import api from "../../service/Api";
 import Popup from "../Popup/Popup";
+import Spinner from "../Spinner/Spinner";
 
 class Auth extends Component{
   state = {
+    loaded: false,
     loginForm: true, //Indica qual formulário deve ser mostrado
 
     //dados de cadastro
@@ -145,12 +147,15 @@ class Auth extends Component{
   componentDidMount(){
     const loginToken = localStorage.getItem('@reactpagseguro/logintoken');
     if(loginToken) window.location.replace('/Cliente');
+    else this.setState({loaded: true});
   }
 
   render(){
     let st = this.state;
 
-    return(
+    if(!st.loaded) return(<Spinner/>);
+
+    else return(
     <div className="App">
       <header className="App-header Half-screen">
         <h1>Autenticação</h1>

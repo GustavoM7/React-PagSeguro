@@ -2,10 +2,12 @@ import React, {Component} from "react";
 import api from "../../service/Api";
 import {Link} from "react-router-dom";
 import Popup from "../Popup/Popup";
+import Spinner from "../Spinner/Spinner";
 
 class ClientInterface extends Component {
 
   state = {
+    loaded: false,
     user: null,
     popText: "",
     popWarning: false,
@@ -39,7 +41,7 @@ class ClientInterface extends Component {
         }
         else{
           this.callPopup("Autenticado!", false, true, false);
-          this.setState({user: res.data}); 
+          this.setState({user: res.data, loaded: true}); 
            
         } 
     
@@ -64,7 +66,9 @@ class ClientInterface extends Component {
   render(){
     const st = this.state;
 
-    return(
+    if(!st.loaded) return(<Spinner/>);
+
+    else return(
       <div className="App">
         <header className="App-header Half-screen">
           <h1>Área do cliente</h1>

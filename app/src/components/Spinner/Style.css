@@ -1,0 +1,7 @@
+@keyframes rotating {
+  to{transform: rotate(360deg);}
+}
+
+.Spinner img {
+  animation: rotating 3s linear infinite;
+}
