@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import api from "../../service/Api";
 import {Link} from "react-router-dom";
 import Popup from "../Popup/Popup";
+import Modal from "../Modal/Modal";
 import Spinner from "../Spinner/Spinner";
 
 class ClientInterface extends Component {
@@ -9,10 +10,17 @@ class ClientInterface extends Component {
   state = {
     loaded: false,
     user: null,
+    userUpdate: null,
     popText: "",
     popWarning: false,
     popVisibility: false,
     popPermanent: false,
+  }
+
+  handleInput = (e) =>{
+    this.setState({
+      user: {[e.target.name]: e.target.value},
+    })
   }
 
   callPopup = (text, warning, visibility, permanent) =>{
@@ -41,7 +49,7 @@ class ClientInterface extends Component {
         }
         else{
           this.callPopup("Autenticado!", false, true, false);
-          this.setState({user: res.data, loaded: true}); 
+          this.setState({user: res.data, userUpdate: res.data, loaded: true}); 
            
         } 
     
@@ -78,8 +86,8 @@ class ClientInterface extends Component {
           <p className="App-link" onClick={() => this.logout()}>
             Logout
           </p>
-          <p className="App-link" onClick={() => this.logout()}>
-            Atualizar dados
+          <p id="configButton" className="App-link">
+            Configurações
           </p>
         </header>
 
@@ -92,6 +100,66 @@ class ClientInterface extends Component {
         onClose={this.closePopup}>
           {st.popText}
         </Popup>
+
+        <Modal listenersId={["configButton"]}>
+          <form>
+            <h3>ATUALIZAR DADOS</h3>
+            <section>
+            <div className="form-row">
+              <label>NOME:</label>
+              <input name="name" value={st.userUpdate.name} onChange={this.handleInput}/>
+            </div>
+
+            <div className="form-row">
+              <label>EMAIL:</label>
+              <input name="email" type="email" value={st.userUpdate.email} onChange={this.handleInput}/>
+            </div>
+
+            <div className="form-row">
+              <label>DDD:</label>
+              <input className="short-input" name="phone_code" value={st.userUpdate.phone_code} onChange={this.handleInput}/>
+
+              <label>TELEFONE:</label>
+              <input name="phone" value={st.userUpdate.phone} onChange={this.handleInput}/>
+            </div>
+
+            <div className="form-row">
+              <label>CEP:</label>
+              <input className="short-input" name="postal_code" value={st.userUpdate.postal_code} onChange={this.handleInput}/>
+
+              <label>BAIRRO:</label>
+              <input name="district" value={st.userUpdate.district} onChange={this.handleInput}/>
+            </div>
+
+            <div className="form-row">
+              <label>RUA:</label>
+              <input name="street" value={st.userUpdate.street} onChange={this.handleInput}/>
+
+              <label>NÚMERO:</label>
+              <input className="short-input" name="number" value={st.userUpdate.number} onChange={this.handleInput}/>
+
+              <label>COMPLEMENTO:</label>
+              <input name="complement" value={st.userUpdate.complement} onChange={this.handleInput}/>
+            </div>
+            
+            <div className="form-row">
+              <label>CIDADE:</label>
+              <input name="city" value={st.userUpdate.city} onChange={this.handleInput}/>
+
+              <label>ESTADO:</label>
+              <input name="state" value={st.userUpdate.state} onChange={this.handleInput}/>
+
+              <label>PAÍS:</label>
+              <input name="country" value={st.userUpdate.country} onChange={this.handleInput}/>
+            </div>
+
+            </section>
+            <button type="button">SALVAR</button>
+
+          </form>
+          <hr/>
+          <div className="Danger"><button type="button">EXCLUIR CONTA</button></div>
+        </Modal>
 
       </div>
     )

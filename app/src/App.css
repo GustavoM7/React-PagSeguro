@@ -93,6 +93,11 @@ hr {
   background-color: #09d3ac;
 }
 
+.Danger button{
+  width: 200px;
+  background-color: #ff3232;
+}
+
 .App form label{
   font-size: calc(1px + 2vmin);
   margin: auto auto auto 18px;
