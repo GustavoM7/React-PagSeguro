@@ -6,7 +6,7 @@ const NotFound = () =>{
   return (
     <div className="App">
       <header className="App-header Full-screen Spinner">
-        <img className="Spinner" src={logo} className="App-logo" alt="logo" />
+        <img className="Spinner" src={logo} alt="logo" />
       </header>
     </div>
   );
