@@ -17,6 +17,7 @@
 }
 
 .Popup span button{
+  cursor: pointer;
   border: none;
   height: 30px;
   width: 30px;
