@@ -1,12 +1,12 @@
 import React from 'react';
-import logo from '../logo.svg';
+import {ReactLogo} from '../Icons/Icons';
 import {Link} from "react-router-dom";
 
 const NotFound = () =>{
   return (
     <div className="App">
       <header className="App-header Full-screen">
-        <img src={logo} className="App-logo" alt="logo" />
+        <ReactLogo/>
         <p>Página não encontrada... :C</p>
         <Link to="/home" className="App-link">Tela inicial</Link>
       </header>
