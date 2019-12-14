@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 import Popup from "../Popup/Popup";
 import Modal from "../Modal/Modal";
 import Spinner from "../Spinner/Spinner";
+import {InfoIcon, SearchIcon} from "../Icons/Icons";
 
 class ClientInterface extends Component {
 
@@ -15,6 +16,7 @@ class ClientInterface extends Component {
     popWarning: false,
     popVisibility: false,
     popPermanent: false,
+    infoVisibility: false,
   }
 
   handleInput = (e) =>{
@@ -39,6 +41,12 @@ class ClientInterface extends Component {
       popVisibility: false,
       popPermanent: false,
     })
+  }
+
+  handleInfo = () =>{
+    this.state.infoVisibility ? setTimeout(() => this.setState({infoVisibility: false}), 0)
+    : this.setState({infoVisibility: true});
+    
   }
 
   authenticate = (token) =>{
@@ -123,14 +131,29 @@ class ClientInterface extends Component {
               <input name="phone" value={st.userUpdate.phone} onChange={this.handleInput}/>
             </div>
 
+            <div onMouseLeave={() => this.setState({infoVisibility: false})}>
             <div className="form-row">
+              <span onMouseOver={() => this.setState({infoVisibility: true})}>
+                <InfoIcon/>
+              </span>
+
               <label>CEP:</label>
               <input className="short-input" name="postal_code" value={st.userUpdate.postal_code} onChange={this.handleInput}/>
 
+              <span>
+                <SearchIcon />
+              </span>
+ 
               <label>BAIRRO:</label>
               <input name="district" value={st.userUpdate.district} onChange={this.handleInput}/>
             </div>
 
+            {st.infoVisibility ?
+              <p className="form-row" onMouseOver={() => this.setState({infoVisibility: true})} onMouseOut={() => this.setState({infoVisibility: true})}>Pesquise um CEP válido para preencher seu endereço automaticamente. &nbsp; <a href="http://www.buscacep.correios.com.br/sistemas/buscacep/" target="_blank" rel="noopener noreferrer"> Consulte seu CEP </a></p>
+            :null
+            }
+            </div>
+            
             <div className="form-row">
               <label>RUA:</label>
               <input name="street" value={st.userUpdate.street} onChange={this.handleInput}/>

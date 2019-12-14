@@ -56,6 +56,27 @@ hr {
   font-size: calc(10px + 2vmin);
 }
 
+.App form svg {
+  height: 15px;
+  cursor: pointer;
+  fill: #282c34;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+
+.App form svg:hover {
+  fill: #09d3ac
+}
+
+.App form p {
+  font-size: calc(1px + 2vmin);
+  color: #282c34;
+  text-align: center;
+  padding: 12px 20px;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+
 .App section{
   max-width: 90%;
   min-width: 60%;
@@ -109,6 +130,8 @@ hr {
   justify-content: flex-start;
   align-items: center;
   padding: 10px;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
 }
 
 .short-input{
