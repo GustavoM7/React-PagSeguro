@@ -17,11 +17,12 @@ class ClientInterface extends Component {
     popVisibility: false,
     popPermanent: false,
     infoVisibility: false,
+    cepErrorMsg: "",
   }
 
   handleInput = (e) =>{
     this.setState({
-      user: {[e.target.name]: e.target.value},
+      userUpdate: {[e.target.name]: e.target.value},
     })
   }
 
@@ -47,6 +48,46 @@ class ClientInterface extends Component {
     this.state.infoVisibility ? setTimeout(() => this.setState({infoVisibility: false}), 0)
     : this.setState({infoVisibility: true});
     
+  }
+
+  callCepError = (msg) => {
+    this.setState({cepErrorMsg: msg,});
+
+  }
+
+  searchCep = () =>{
+    const cep = this.state.userUpdate.postal_code;
+    
+    if(cep && cep.length === 8){
+      api.get("/Correios/CEP/"+cep).then(res => {
+        if(res.data.error) this.callCepError("Erro inesperado... Tente mais tarde!");
+        else if(res.data === "Formato invalido") this.callCepError("Formato inválido");
+        else if(res.data === "Not found!") this.callCepError("CEP não encontrado...");
+        else {
+          const adress = res.data;
+          this.setState({
+            cepErrorMsg: "",
+            userUpdate:{
+              district: adress.bairro,
+              city: adress.localidade,
+              state: adress.uf,
+              country: "BR", 
+            }
+          });
+
+        }
+
+      }).catch(e => {
+        console.log(e);
+        this.callCepError("Erro inesperado... Tente mais tarde!");
+
+      })
+
+    } else {
+      this.callCepError("Insira um endereço de CEP válido");
+
+    }
+
   }
 
   authenticate = (token) =>{
@@ -140,7 +181,7 @@ class ClientInterface extends Component {
               <label>CEP:</label>
               <input className="short-input" name="postal_code" value={st.userUpdate.postal_code} onChange={this.handleInput}/>
 
-              <span>
+              <span onClick={() => this.searchCep()}>
                 <SearchIcon />
               </span>
  
@@ -150,6 +191,11 @@ class ClientInterface extends Component {
 
             {st.infoVisibility ?
               <p className="form-row" onMouseOver={() => this.setState({infoVisibility: true})} onMouseOut={() => this.setState({infoVisibility: true})}>Pesquise um CEP válido para preencher seu endereço automaticamente. &nbsp; <a href="http://www.buscacep.correios.com.br/sistemas/buscacep/" target="_blank" rel="noopener noreferrer"> Consulte seu CEP </a></p>
+            :null
+            }
+
+            {st.cepErrorMsg ?
+              <p className="form-row" style={{color:"#ff3232"}}>{st.cepErrorMsg}</p>
             :null
             }
             </div>

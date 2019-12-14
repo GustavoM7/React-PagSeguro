@@ -16,21 +16,21 @@ module.exports = {
 
       }).then(response => {
         console.log("Consulta de CEP solicitada a API com sucesso!");
-        if(response.data.error) {
+        if(response.data.erro) {
           console.log("CEP não encontrado...");
-          res.status(404).send("Not found!");
+          res.send("Not found!");
         }
 
         else res.send(response.data);
         
       }).catch(e => {
         console.log("Consulta de CEP solicitada a API com erro inesperado...");
-        res.status(500).send({error: e});
+        res.send({error: e});
     
       })
     } else {
       console.log("Formato de cep inválido!");
-      res.status(400).send("Formato invalido");
+      res.send("Formato invalido");
 
     }
     
