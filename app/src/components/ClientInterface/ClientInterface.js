@@ -18,12 +18,17 @@ class ClientInterface extends Component {
     popPermanent: false,
     infoVisibility: false,
     cepErrorMsg: "",
+    password: "",
   }
 
   handleInput = (e) =>{
     this.setState({
       userUpdate: {[e.target.name]: e.target.value},
     })
+  }
+
+  handlePassword = (e) => {
+    this.setState({password: e.target.value});
   }
 
   callPopup = (text, warning, visibility, permanent) =>{
@@ -114,6 +119,10 @@ class ClientInterface extends Component {
     window.location.replace('/Authenticate');
   }
 
+  confirmUser = () => {
+
+  }
+
   componentDidMount(){
     const loginToken = localStorage.getItem('@reactpagseguro/logintoken');
     if(!loginToken) window.location.replace('/Authenticate');
@@ -150,7 +159,7 @@ class ClientInterface extends Component {
           {st.popText}
         </Popup>
 
-        <Modal listenersId={["configButton"]}>
+        <Modal listenersId={["configButton", "remove"]}>
           <form>
             <h3>ATUALIZAR DADOS</h3>
             <section>
@@ -227,7 +236,28 @@ class ClientInterface extends Component {
 
           </form>
           <hr/>
-          <div className="Danger"><button type="button">EXCLUIR CONTA</button></div>
+          <div className="Danger"><button id="remove" type="button">EXCLUIR CONTA</button></div>
+        </Modal>
+
+        <Modal listenersId={["remove", "removeConfirm"]}>
+          <form>
+            <h3>Tem certeza que deseja excluir sua conta?</h3>
+            <section>
+            <p className="form-row">
+              Seus dados serão removidos permanentemente do banco de dados.
+            </p>
+            <p className="form-row">
+              Insira sua senha atual para confirmar.
+            </p>
+            <div className="form-row">
+              <label>SENHA:</label>
+              <input name="password" type="password" value={st.password} onChange={this.handlePassword}/>
+            </div>
+            </section>
+          </form>
+          <div className={st.password ? "Danger" : "Disabled"}>
+            <button id="removeConfirm" type="button" disabled={!st.password}>CONFIRMAR</button>
+          </div>
         </Modal>
 
       </div>

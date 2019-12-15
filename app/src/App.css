@@ -119,6 +119,16 @@ hr {
   background-color: #ff3232;
 }
 
+.Disabled button{
+  width: 200px;
+  background-color: #708090;
+}
+
+.Disabled button:hover{
+  width: 200px;
+  background-color: #09d3ac;
+}
+
 .App form label{
   font-size: calc(1px + 2vmin);
   margin: auto auto auto 18px;
