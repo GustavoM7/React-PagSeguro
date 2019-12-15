@@ -14,43 +14,43 @@ module.exports = db.sequelize.define(
     },
     phone_code: {
       type: Sequelize.STRING,
-      defaultValue: null,
+      defaultValue: "",
     },
     phone: {
       type: Sequelize.INTEGER,
-      defaultValue: null,
+      defaultValue: "",
     },
     street: {
       type: Sequelize.STRING,
-      defaultValue: null,
+      defaultValue: "",
     },
     number: {
       type: Sequelize.STRING,
-      defaultValue: null,
+      defaultValue: "",
     },
     complement: {
       type: Sequelize.STRING,
-      defaultValue: null,
+      defaultValue: "",
     },
     district: {
       type: Sequelize.STRING,
-      defaultValue: null,
+      defaultValue: "",
     },
     postal_code: {
       type: Sequelize.STRING,
-      defaultValue: null,
+      defaultValue: "",
     },
     city: {
       type: Sequelize.STRING,
-      defaultValue: null,
+      defaultValue: "",
     },
     state: {
       type: Sequelize.STRING,
-      defaultValue: null,
+      defaultValue: "",
     },
     country: {
       type: Sequelize.STRING,
-      defaultValue: null,
+      defaultValue: "",
     },
     email: {
       type: Sequelize.STRING,
