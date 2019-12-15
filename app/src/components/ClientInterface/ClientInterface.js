@@ -120,7 +120,26 @@ class ClientInterface extends Component {
   }
 
   confirmUser = () => {
+    this.callPopup("verificando...", false, true, true);
+    const user = {
+      email: this.state.user.email,
+      password: this.state.password
+    }
 
+    api.post('/Users/Login', user).then(res => {
+      if(res.data.error) this.callPopup("Não foi possível realizar login!", true, true, false);
+      else {
+        this.callPopup("Excluindo conta...", false, true, true);
+      }
+    }).catch(e => {
+      console(e);
+      this.callPopup("Erro inesperado... Tente mais tarde!", true, true, false);
+
+    })
+  }
+
+  removeUser = () => {
+    
   }
 
   componentDidMount(){
@@ -256,7 +275,11 @@ class ClientInterface extends Component {
             </section>
           </form>
           <div className={st.password ? "Danger" : "Disabled"}>
-            <button id="removeConfirm" type="button" disabled={!st.password}>CONFIRMAR</button>
+            <button 
+            id="removeConfirm" 
+            type="button" 
+            disabled={!st.password}
+            onClick={() => this.confirmUser()}>CONFIRMAR</button>
           </div>
         </Modal>
 
