@@ -130,6 +130,7 @@ class ClientInterface extends Component {
       if(res.data.error) this.callPopup("Não foi possível realizar login!", true, true, false);
       else {
         this.callPopup("Excluindo conta...", false, true, true);
+        this.removeUser();
       }
     }).catch(e => {
       console(e);
@@ -139,7 +140,16 @@ class ClientInterface extends Component {
   }
 
   removeUser = () => {
-    
+    api.post('/Users/Delete', {email: this.state.user.email}).then(res => {
+      console.log(res);
+      this.callPopup("Conta removida!", false, true, false);
+      this.logout();
+
+    }).catch(e => {
+      console.log(e);
+      this.callPopup("Erro inesperado... Tente mais tarde!", true, true, false);
+
+    })
   }
 
   componentDidMount(){

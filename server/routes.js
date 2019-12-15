@@ -8,12 +8,12 @@ const Correios = require('./routes/Correios');
 
 routes.get('/', Home.init);
 routes.get('/Users', Users.getAll);
-routes.get('/Users/Authenticate', Users.authenticate);
 routes.get('/Correios/CEP/:cep', Correios.AdressGeter);
 
 routes.post('/Users', Users.create);
 routes.post('/Users/Login', Users.login);
 routes.post('/Users/Authenticate', Users.authenticate);
+routes.post('/Users/Delete', Users.delete);
 routes.post('/pagseguro', PagSeguro.sendCheckout);
 
 module.exports = routes;
