@@ -1,0 +1,30 @@
+.cepInfo {
+  max-height: 0;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+
+.cepInfo p {
+  opacity: 0;
+  transition: opacity .5s linear;
+}
+
+.cepShow:hover + .cepInfo {
+  max-height: 30px;
+}
+
+.cepShow:hover + .cepInfo p {
+  opacity: 1;
+}
+
+.cepShow:hover .cepInfoIcon svg {
+  fill: #09d3ac;
+}
+
+.cepInfo:hover p{
+  opacity: 1;
+}
+
+.cepInfo:hover{
+  max-height: 30px;
+}

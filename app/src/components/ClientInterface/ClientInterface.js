@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import Popup from "../Popup/Popup";
 import Modal from "../Modal/Modal";
 import Spinner from "../Spinner/Spinner";
-import {InfoIcon, SearchIcon} from "../Icons/Icons";
+import UpdateForm from "./UpdateForm";
 
 class ClientInterface extends Component {
 
@@ -216,85 +216,11 @@ class ClientInterface extends Component {
           {st.popText}
         </Popup>
 
-        <Modal listenersId={["configButton", "remove", "update"]}>
-          <form>
-            <h3>ATUALIZAR DADOS</h3>
-            <section>
-            <div className="form-row">
-              <label>NOME:</label>
-              <input name="name" value={st.userUpdate.name} onChange={this.handleInput}/>
-            </div>
-
-            <div className="form-row">
-              <label>EMAIL:</label>
-              <input name="email" type="email" value={st.userUpdate.email} onChange={this.handleInput}/>
-            </div>
-
-            <div className="form-row">
-              <label>DDD:</label>
-              <input className="short-input" name="phone_code" value={st.userUpdate.phone_code} onChange={this.handleInput}/>
-
-              <label>TELEFONE:</label>
-              <input name="phone" value={st.userUpdate.phone} onChange={this.handleInput}/>
-            </div>
-
-            <div onMouseLeave={() => this.setState({infoVisibility: false})}>
-            <div className="form-row">
-              <span onMouseOver={() => this.setState({infoVisibility: true})}>
-                <InfoIcon/>
-              </span>
-
-              <label>CEP:</label>
-              <input className="short-input" name="postal_code" value={st.userUpdate.postal_code} onChange={this.handleInput}/>
-
-              <span onClick={() => this.searchCep()}>
-                <SearchIcon />
-              </span>
- 
-              <label>BAIRRO:</label>
-              <input name="district" value={st.userUpdate.district} onChange={this.handleInput}/>
-            </div>
-
-            {st.infoVisibility ?
-              <p className="form-row" onMouseOver={() => this.setState({infoVisibility: true})} onMouseOut={() => this.setState({infoVisibility: true})}>Pesquise um CEP válido para preencher seu endereço automaticamente. &nbsp; <a href="http://www.buscacep.correios.com.br/sistemas/buscacep/" target="_blank" rel="noopener noreferrer"> Consulte seu CEP </a></p>
-            :null
-            }
-
-            {st.cepErrorMsg ?
-              <p className="form-row" style={{color:"#ff3232"}}>{st.cepErrorMsg}</p>
-            :null
-            }
-            </div>
-            
-            <div className="form-row">
-              <label>RUA:</label>
-              <input name="street" value={st.userUpdate.street} onChange={this.handleInput}/>
-
-              <label>NÚMERO:</label>
-              <input className="short-input" name="number" value={st.userUpdate.number} onChange={this.handleInput}/>
-
-              <label>COMPLEMENTO:</label>
-              <input name="complement" value={st.userUpdate.complement} onChange={this.handleInput}/>
-            </div>
-            
-            <div className="form-row">
-              <label>CIDADE:</label>
-              <input name="city" value={st.userUpdate.city} onChange={this.handleInput}/>
-
-              <label>ESTADO:</label>
-              <input name="state" value={st.userUpdate.state} onChange={this.handleInput}/>
-
-              <label>PAÍS:</label>
-              <input name="country" value={st.userUpdate.country} onChange={this.handleInput}/>
-            </div>
-
-            </section>
-            <button id="update" type="button">SALVAR</button>
-
-          </form>
-          <hr/>
-          <div className="Danger"><button id="remove" type="button">EXCLUIR CONTA</button></div>
-        </Modal>
+        <UpdateForm
+          handleInput={this.handleInput}
+          st={st}
+          searchCep={this.searchCep}
+        />
 
         <Modal listenersId={["remove", "removeConfirm"]}>
           <form>
