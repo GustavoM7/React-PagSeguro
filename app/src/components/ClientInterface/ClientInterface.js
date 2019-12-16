@@ -119,7 +119,7 @@ class ClientInterface extends Component {
     window.location.replace('/Authenticate');
   }
 
-  confirmUser = () => {
+  confirmUser = (type) => {
     this.callPopup("verificando...", false, true, true);
     const user = {
       email: this.state.user.email,
@@ -129,8 +129,16 @@ class ClientInterface extends Component {
     api.post('/Users/Login', user).then(res => {
       if(res.data.error) this.callPopup("Não foi possível realizar login!", true, true, false);
       else {
-        this.callPopup("Excluindo conta...", false, true, true);
-        this.removeUser();
+        if(type === "delete"){
+          this.callPopup("Excluindo conta...", false, true, true);
+          this.removeUser();
+
+        } else {
+          this.callPopup("Atualizando dados...", false, true, true);
+          this.updateUser();
+
+        }
+        
       }
     }).catch(e => {
       console(e);
@@ -150,6 +158,10 @@ class ClientInterface extends Component {
       this.callPopup("Erro inesperado... Tente mais tarde!", true, true, false);
 
     })
+  }
+
+  updateUser = () => {
+    console.log("Update será feito...")
   }
 
   componentDidMount(){
@@ -261,7 +273,7 @@ class ClientInterface extends Component {
             </div>
 
             </section>
-            <button type="button">SALVAR</button>
+            <button id="update" type="button">SALVAR</button>
 
           </form>
           <hr/>
@@ -289,7 +301,32 @@ class ClientInterface extends Component {
             id="removeConfirm" 
             type="button" 
             disabled={!st.password}
-            onClick={() => this.confirmUser()}>CONFIRMAR</button>
+            onClick={() => this.confirmUser("delete")}>CONFIRMAR</button>
+          </div>
+        </Modal>
+
+        <Modal listenersId={["update", "updateConfirm"]}>
+          <form>
+            <h3>Tem certeza que deseja alterar seus dados?</h3>
+            <section>
+            <p className="form-row">
+              Seus dados serão alterados permanentemente do banco de dados.
+            </p>
+            <p className="form-row">
+              Insira sua senha atual para confirmar.
+            </p>
+            <div className="form-row">
+              <label>SENHA:</label>
+              <input name="password" type="password" value={st.password} onChange={this.handlePassword}/>
+            </div>
+            </section>
+          </form>
+          <div className={st.password ? "Danger" : "Disabled"}>
+            <button 
+            id="removeConfirm" 
+            type="button" 
+            disabled={!st.password}
+            onClick={() => this.confirmUser("update")}>CONFIRMAR</button>
           </div>
         </Modal>
 
