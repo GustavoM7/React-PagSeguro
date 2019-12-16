@@ -126,6 +126,8 @@ module.exports = {
 
   update(req, res){
     console.log("Atualizando dados do usuário de email:"+ req.body.email);
+    console.log("Novos dados:")
+    console.log(req.body.newUser)
     User.findOne({where: {email: req.body.email}}).then(user =>{
       if(!user){
         console.log("Usuário não encontrado!");
@@ -134,11 +136,11 @@ module.exports = {
       } else {
         const newEmail = req.body.newUser.email;
 
-        if(newEmail !== user.email){
+        if(newEmail && newEmail !== user.email){
           User.findOne({where: {email: newEmail}}).then(otherUser => {
             if(otherUser){
               console.log("Conflito de email...");
-              res.send({error: "Email já está cadastrado"})
+              return res.send({error: "Email já está cadastrado"})
 
             }
             

@@ -161,7 +161,23 @@ class ClientInterface extends Component {
   }
 
   updateUser = () => {
-    console.log("Update será feito...")
+    api.post("/Users/Update",{email: this.state.user.email, newUser:this.state.userUpdate }).then(res => {
+      if(res.data.error === "Email já está cadastrado") this.callPopup("Este email já está cadastrado, tente outro email", true, true, false);
+      else if(res.data.error){
+        console.log(res.data.error);
+        this.callPopup("Erro inesperado... Tente mais tarde!", true, true, false);
+      } 
+
+      else{
+        this.callPopup("Dados atualizados!", false, true, false);
+        window.location.reload();
+
+      }
+    }).catch(e => {
+      console.log(e);
+      this.callPopup("Erro inesperado... Tente mais tarde!", true, true, false);
+      
+    })
   }
 
   componentDidMount(){
@@ -200,7 +216,7 @@ class ClientInterface extends Component {
           {st.popText}
         </Popup>
 
-        <Modal listenersId={["configButton", "remove"]}>
+        <Modal listenersId={["configButton", "remove", "update"]}>
           <form>
             <h3>ATUALIZAR DADOS</h3>
             <section>
@@ -323,7 +339,7 @@ class ClientInterface extends Component {
           </form>
           <div className={st.password ? "Danger" : "Disabled"}>
             <button 
-            id="removeConfirm" 
+            id="updateConfirm" 
             type="button" 
             disabled={!st.password}
             onClick={() => this.confirmUser("update")}>CONFIRMAR</button>
