@@ -74,7 +74,7 @@ module.exports = {
   },
 
   authenticate(req, res){
-    console.log("Realizando autenticação para token: " + req.body.headers['Authorization']);
+    console.log("Realizando autenticação por token");
     jwt.verify(req.body.headers['Authorization'], process.env.SECRET_KEY, (err, decode) => {
       if(err){
         console.log("Autenticação mal sucedida!")
@@ -129,21 +129,41 @@ module.exports = {
     User.findOne({where: {email: req.body.email}}).then(user =>{
       if(!user){
         console.log("Usuário não encontrado!");
-        res.send({error: "Usuário não econtrado", code: 404});
+        return res.send({error: "Usuário não econtrado", code: 404});
 
       } else {
-        User.update(req.body, {where: {email: req.body.email}}).then(() =>{
+        const newEmail = req.body.newUser.email;
+
+        if(newEmail !== user.email){
+          User.findOne({where: {email: newEmail}}).then(otherUser => {
+            if(otherUser){
+              console.log("Conflito de email...");
+              res.send({error: "Email já está cadastrado"})
+
+            }
+            
+          }).catch(e => {
+            console.log("erro inesperado na verificação do email");
+            console.log(e);
+            return res.send({error: "erro inesperado na verificação do email"});
+
+          })
+
+        }
+
+        User.update(req.body.newUser, {where: {email: req.body.email}}).then(() =>{
           console.log("Dados atualizados!");
-          res.send({msg: "Sucess", code: 200});
+          return res.send({msg: "Sucess", code: 200});
 
         }).catch(error => {
           console.log("Erro: "+ error);
-          res.send("erro:" + error);
+          return res.send({error: "error inesperado na atualização dos dados"});
+
         })
       }
     }).catch(error => {
       console.log("Erro: "+ error);
-      res.send("erro:" + error)
+      return res.send({error: "erro inesperado na busca do usuário"})
     
     });
   },
