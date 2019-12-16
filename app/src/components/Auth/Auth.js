@@ -196,7 +196,7 @@ const FormNewUser = (props) =>{
           <label>EMAIL:</label>
           <input name="emailConfirm" type="email" value={props.state.emailConfirm} onChange={props.handleInput}/>
           <label>CONFITMAR EMAIL:</label>
-          <input name="email" type="email" value={props.state.email} onChange={props.handleInput}/>
+          <input name="email" value={props.state.email} onChange={props.handleInput}/>
         </div>
 
         <div className="form-row">
