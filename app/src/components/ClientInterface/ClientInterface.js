@@ -2,9 +2,9 @@ import React, {Component} from "react";
 import api from "../../service/Api";
 import {Link} from "react-router-dom";
 import Popup from "../Popup/Popup";
-import Modal from "../Modal/Modal";
 import Spinner from "../Spinner/Spinner";
 import UpdateForm from "./UpdateForm";
+import AuthConfirm from "./AuthConfirm";
 
 class ClientInterface extends Component {
 
@@ -222,55 +222,21 @@ class ClientInterface extends Component {
           searchCep={this.searchCep}
         />
 
-        <Modal listenersId={["remove", "removeConfirm"]}>
-          <form>
-            <h3>Tem certeza que deseja excluir sua conta?</h3>
-            <section>
-            <p className="form-row">
-              Seus dados serão removidos permanentemente do banco de dados.
-            </p>
-            <p className="form-row">
-              Insira sua senha atual para confirmar.
-            </p>
-            <div className="form-row">
-              <label>SENHA:</label>
-              <input name="password" type="password" value={st.password} onChange={this.handlePassword}/>
-            </div>
-            </section>
-          </form>
-          <div className={st.password ? "Danger" : "Disabled"}>
-            <button 
-            id="removeConfirm" 
-            type="button" 
-            disabled={!st.password}
-            onClick={() => this.confirmUser("delete")}>CONFIRMAR</button>
-          </div>
-        </Modal>
+        <AuthConfirm
+         listenersId={["remove", "removeConfirm"]}
+         title="Tem certeza que deseja excluir sua conta?"
+         text="Seus dados serão removidos permanentemente do banco de dados."
+         st={st}
+         handlePassword={this.handlePassword}
+         type="delete"/>
 
-        <Modal listenersId={["update", "updateConfirm"]}>
-          <form>
-            <h3>Tem certeza que deseja alterar seus dados?</h3>
-            <section>
-            <p className="form-row">
-              Seus dados serão alterados permanentemente do banco de dados.
-            </p>
-            <p className="form-row">
-              Insira sua senha atual para confirmar.
-            </p>
-            <div className="form-row">
-              <label>SENHA:</label>
-              <input name="password" type="password" value={st.password} onChange={this.handlePassword}/>
-            </div>
-            </section>
-          </form>
-          <div className={st.password ? "Danger" : "Disabled"}>
-            <button 
-            id="updateConfirm" 
-            type="button" 
-            disabled={!st.password}
-            onClick={() => this.confirmUser("update")}>CONFIRMAR</button>
-          </div>
-        </Modal>
+        <AuthConfirm
+         listenersId={["update", "updateConfirm"]}
+         title="Tem certeza que deseja alterar seus dados?"
+         text="Seus dados serão alterados permanentemente do banco de dados."
+         st={st}
+         handlePassword={this.handlePassword}
+         delete="update"/>
 
       </div>
     )
