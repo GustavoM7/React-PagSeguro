@@ -1,17 +1,18 @@
 import React, {Component} from "react";
 import api from "../../service/Api";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import Popup from "../Popup/Popup";
 import Spinner from "../Spinner/Spinner";
 import UpdateForm from "./UpdateForm";
 import AuthConfirm from "./AuthConfirm";
+import { connect } from "react-redux";
+import { setUser } from "../../store/actions/user";
 
 class ClientInterface extends Component {
 
   state = {
     loaded: false,
-    user: null,
-    userUpdate: null,
+    userUpdate: {},
     popText: "",
     popWarning: false,
     popVisibility: false,
@@ -102,9 +103,10 @@ class ClientInterface extends Component {
           this.logout();
         }
         else{
+          this.props.setUser(res.data);
           this.callPopup("Autenticado!", false, true, false);
-          this.setState({user: res.data, userUpdate: res.data, loaded: true}); 
-           
+          this.setState({userUpdate: res.data, loaded: true}); 
+
         } 
     
     }).catch(e => {
@@ -122,7 +124,7 @@ class ClientInterface extends Component {
   confirmUser = (type) => {
     this.callPopup("verificando...", false, true, true);
     const user = {
-      email: this.state.user.email,
+      email: this.props.user.email,
       password: this.state.password
     }
 
@@ -148,7 +150,7 @@ class ClientInterface extends Component {
   }
 
   removeUser = () => {
-    api.post('/Users/Delete', {email: this.state.user.email}).then(res => {
+    api.post('/Users/Delete', {email: this.props.user.email}).then(res => {
       console.log(res);
       this.callPopup("Conta removida!", false, true, false);
       this.logout();
@@ -161,7 +163,7 @@ class ClientInterface extends Component {
   }
 
   updateUser = () => {
-    api.post("/Users/Update",{email: this.state.user.email, newUser:this.state.userUpdate }).then(res => {
+    api.post("/Users/Update",{email: this.props.user.email, newUser: this.state.userUpdate }).then(res => {
       if(res.data.error === "Email já está cadastrado") this.callPopup("Este email já está cadastrado, tente outro email", true, true, false);
       else if(res.data.error){
         console.log(res.data.error);
@@ -188,6 +190,7 @@ class ClientInterface extends Component {
 
   render(){
     const st = this.state;
+    const user = this.props.user;
 
     if(!st.loaded) return(<Spinner/>);
 
@@ -195,7 +198,7 @@ class ClientInterface extends Component {
       <div className="App">
         <header className="App-header Half-screen">
           <h1>Área do cliente</h1>
-          {st.user? <p>Bem vindo(a), <b>{st.user.name}</b></p>:null}
+          {user? <p>Bem vindo(a), <b>{user.name}</b></p>:null}
           <p>Acompanhe status das simualações</p>
           <p><Link to="/home" className="App-link">Tela inicial</Link></p>
           <p className="App-link" onClick={() => this.logout()}>
@@ -243,4 +246,7 @@ class ClientInterface extends Component {
   }
 }
 
-export default ClientInterface;
+export default connect(
+  state => ({user: state.user}),
+  { setUser }
+) (ClientInterface);
