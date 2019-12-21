@@ -190,7 +190,7 @@ class ClientInterface extends Component {
 
   render(){
     const st = this.state;
-    const user = this.props.user;
+    const user = this.props.state.user;
 
     if(!st.loaded) return(<Spinner/>);
 
@@ -221,7 +221,7 @@ class ClientInterface extends Component {
 
         <UpdateForm
           handleInput={this.handleInput}
-          st={st}
+          userUpdate={st.userUpdate}
           searchCep={this.searchCep}
         />
 
@@ -237,7 +237,7 @@ class ClientInterface extends Component {
          listenersId={["update", "updateConfirm"]}
          title="Tem certeza que deseja alterar seus dados?"
          text="Seus dados serão alterados permanentemente do banco de dados."
-         st={st}
+         password={st.password}
          handlePassword={this.handlePassword}
          delete="update"/>
 
@@ -247,6 +247,6 @@ class ClientInterface extends Component {
 }
 
 export default connect(
-  state => ({user: state.user}),
+  state => ({state: state.user}),
   { setUser }
 ) (ClientInterface);

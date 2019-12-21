@@ -11,20 +11,20 @@ const UpdateForm = (props) => {
       <section>
       <div className="form-row">
         <label>NOME:</label>
-        <input name="name" value={props.st.userUpdate.name} onChange={props.handleInput}/>
+        <input name="name" value={props.userUpdate.name} onChange={props.handleInput}/>
       </div>
 
       <div className="form-row">
         <label>EMAIL:</label>
-        <input name="email" type="email" value={props.st.userUpdate.email} onChange={props.handleInput}/>
+        <input name="email" type="email" value={props.userUpdate.email} onChange={props.handleInput}/>
       </div>
 
       <div className="form-row">
         <label>DDD:</label>
-        <input className="short-input" name="phone_code" value={props.st.userUpdate.phone_code} onChange={props.handleInput}/>
+        <input className="short-input" name="phone_code" value={props.userUpdate.phone_code} onChange={props.handleInput}/>
 
         <label>TELEFONE:</label>
-        <input name="phone" value={props.st.userUpdate.phone} onChange={props.handleInput}/>
+        <input name="phone" value={props.userUpdate.phone} onChange={props.handleInput}/>
       </div>
 
       <div>
@@ -34,14 +34,14 @@ const UpdateForm = (props) => {
         </div>
 
         <label >CEP:</label>
-        <input className="short-input" name="postal_code" value={props.st.userUpdate.postal_code} onChange={props.handleInput}/>
+        <input className="short-input" name="postal_code" value={props.userUpdate.postal_code} onChange={props.handleInput}/>
 
         <span onClick={() => props.searchCep()}>
           <SearchIcon />
         </span>
 
         <label>BAIRRO:</label>
-        <input name="district" value={props.st.userUpdate.district} onChange={props.handleInput}/>
+        <input name="district" value={props.userUpdate.district} onChange={props.handleInput}/>
       </div>
 
       <div className="cepInfo">
@@ -50,32 +50,32 @@ const UpdateForm = (props) => {
       </p>
       </div>
 
-      {props.st.cepErrorMsg ?
-        <p className="form-row" style={{color:"#ff3232"}}>{props.st.cepErrorMsg}</p>
+      {props.cepErrorMsg ?
+        <p className="form-row" style={{color:"#ff3232"}}>{props.cepErrorMsg}</p>
       :null
       }
       </div>
       
       <div className="form-row">
         <label>RUA:</label>
-        <input name="street" value={props.st.userUpdate.street} onChange={props.handleInput}/>
+        <input name="street" value={props.userUpdate.street} onChange={props.handleInput}/>
 
         <label>NÚMERO:</label>
-        <input className="short-input" name="number" value={props.st.userUpdate.number} onChange={props.handleInput}/>
+        <input className="short-input" name="number" value={props.userUpdate.number} onChange={props.handleInput}/>
 
         <label>COMPLEMENTO:</label>
-        <input name="complement" value={props.st.userUpdate.complement} onChange={props.handleInput}/>
+        <input name="complement" value={props.userUpdate.complement} onChange={props.handleInput}/>
       </div>
       
       <div className="form-row">
         <label>CIDADE:</label>
-        <input name="city" value={props.st.userUpdate.city} onChange={props.handleInput}/>
+        <input name="city" value={props.userUpdate.city} onChange={props.handleInput}/>
 
         <label>ESTADO:</label>
-        <input name="state" value={props.st.userUpdate.state} onChange={props.handleInput}/>
+        <input name="state" value={props.userUpdate.state} onChange={props.handleInput}/>
 
         <label>PAÍS:</label>
-        <input name="country" value={props.st.userUpdate.country} onChange={props.handleInput}/>
+        <input name="country" value={props.userUpdate.country} onChange={props.handleInput}/>
       </div>
 
       </section>

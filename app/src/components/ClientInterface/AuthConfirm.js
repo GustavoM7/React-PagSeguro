@@ -15,15 +15,15 @@ const AuthConfirm = (props) => {
         </p>
         <div className="form-row">
             <label>SENHA:</label>
-            <input name="password" type="password" value={props.st.password} onChange={props.handlePassword}/>
+            <input name="password" type="password" value={props.password} onChange={props.handlePassword}/>
         </div>
         </section>
       </form>
-      <div className={props.st.password ? "Danger" : "Disabled"}>
+      <div className={props.password ? "Danger" : "Disabled"}>
         <button 
         id="updateConfirm" 
         type="button" 
-        disabled={!props.st.password}
+        disabled={!props.password}
         onClick={() => props.confirmUser(props.type)}>CONFIRMAR</button>
       </div>
     </Modal>
