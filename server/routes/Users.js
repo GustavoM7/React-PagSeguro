@@ -75,7 +75,7 @@ module.exports = {
 
   authenticate(req, res){
     console.log("Realizando autenticação por token");
-    jwt.verify(req.body.headers['Authorization'], process.env.SECRET_KEY, (err, decode) => {
+    jwt.verify(req.headers['authorization'], process.env.SECRET_KEY, (err, decode) => {
       if(err){
         console.log("Autenticação mal sucedida!")
         res.send({error: "Usuário não econtrado", code: 404});

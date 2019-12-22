@@ -4,6 +4,8 @@ import api from "../../service/Api";
 import {Link} from "react-router-dom";
 import Popup from '../Popup/Popup';
 import { connect } from "react-redux";
+import { setUser } from "../../store/actions/user";
+import authenticate from '../../service/authenticate';
 
 class Checkout extends Component{
   state = {
@@ -104,28 +106,44 @@ class Checkout extends Component{
     else this.callPopup("Preencha todos os dados!", true, true, false);
   }
 
+  getUser = (user) => {
+    this.setState({
+      name: user.name,
+      email: user.email,
+      phoneAreaCode: user.phone_code,
+      phoneNumber: user.phone,
+      type: 1,
+      street: user.street,
+      number: user.number,
+      complement: user.complement,
+      district: user.district,
+      postalCode: user.postal_code,
+      city: user.city,
+      state: user.state,
+      country: user.country,
+      ref: user.id
+    });
+  }
+
   componentDidMount(){
     this.setState({carrinho: Produtos});
+
+    const loginToken = localStorage.getItem('@reactpagseguro/logintoken');
+    
     if(this.props.state.user.id){
       const user = this.props.state.user;
       this.callPopup("Autenticado!", false, true, false);
-      this.setState({
-        name: user.name,
-        email: user.email,
-        phoneAreaCode: user.phone_code,
-        phoneNumber: user.phone,
-        type: 1,
-        street: user.street,
-        number: user.number,
-        complement: user.complement,
-        district: user.district,
-        postalCode: user.postal_code,
-        city: user.city,
-        state: user.state,
-        country: user.country,
-        ref: user.id
-      });
+      this.getUser(user);
 
+    } else if(loginToken) {
+      authenticate(loginToken, (res)=> {
+      this.props.setUser(res.data);
+      this.getUser(res.data);
+      this.callPopup("Autenticado!", false, true, false);
+      this.setState({userUpdate: res.data, loaded: true});
+  
+      }, console.log("Autenticação expirtada..."));
+      
     }
   }
 
@@ -210,4 +228,4 @@ class Checkout extends Component{
   }
 }
 
-export default connect(state => ({state: state.user}))(Checkout);
+export default connect(state => ({state: state.user}), { setUser })(Checkout);

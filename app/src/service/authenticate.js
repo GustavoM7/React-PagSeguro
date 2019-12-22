@@ -1,4 +1,5 @@
 import logout from './logout';
+import axios from 'axios';
 
 const authenticate = (token, sucess, error) =>{
   const api = axios.create({
@@ -9,18 +10,18 @@ const authenticate = (token, sucess, error) =>{
   api.post('/Users/Authenticate', {headers: {"Authorization" : token}}).then(res => {
     if(res.data.error) {
       console.log("Autenticação expirtada...");
-      error();
+      if(error) error();
       logout();
     }
 
     else{
-      sucess();
+      if(sucess) sucess(res);
     } 
 
 })
   .catch(e => {
     console.log(e);
-    error();
+    if(error) error();
     logout();
 
   }) 

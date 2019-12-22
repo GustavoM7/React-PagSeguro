@@ -7,6 +7,8 @@ import UpdateForm from "./UpdateForm";
 import AuthConfirm from "./AuthConfirm";
 import { connect } from "react-redux";
 import { setUser } from "../../store/actions/user";
+import authenticate from '../../service/authenticate';
+import logout from '../../service/logout';
 
 class ClientInterface extends Component {
 
@@ -96,31 +98,6 @@ class ClientInterface extends Component {
 
   }
 
-  authenticate = (token) =>{
-    api.post('/Users/Authenticate', {headers: {"Authorization" : token}}).then(res => {
-        if(res.data.error) {
-          console.log("Autenticação expirtada...");
-          this.logout();
-        }
-        else{
-          this.props.setUser(res.data);
-          this.callPopup("Autenticado!", false, true, false);
-          this.setState({userUpdate: res.data, loaded: true}); 
-
-        } 
-    
-    }).catch(e => {
-        console.log(e);
-        this.logout();
-
-    }) 
-  }
-
-  logout = () =>{
-    localStorage.removeItem('@reactpagseguro/logintoken');
-    window.location.replace('/Authenticate');
-  }
-
   confirmUser = (type) => {
     this.callPopup("verificando...", false, true, true);
     const user = {
@@ -153,7 +130,7 @@ class ClientInterface extends Component {
     api.post('/Users/Delete', {email: this.props.user.email}).then(res => {
       console.log(res);
       this.callPopup("Conta removida!", false, true, false);
-      this.logout();
+      logout();
 
     }).catch(e => {
       console.log(e);
@@ -184,8 +161,15 @@ class ClientInterface extends Component {
 
   componentDidMount(){
     const loginToken = localStorage.getItem('@reactpagseguro/logintoken');
+
     if(!loginToken) window.location.replace('/Authenticate');
-    else this.authenticate(loginToken);
+
+    else authenticate(loginToken, (res)=> {
+      this.props.setUser(res.data);
+      this.callPopup("Autenticado!", false, true, false);
+      this.setState({userUpdate: res.data, loaded: true});
+
+    }, console.log("Autenticação expirtada..."));
   }
 
   render(){
@@ -201,7 +185,7 @@ class ClientInterface extends Component {
           {user? <p>Bem vindo(a), <b>{user.name}</b></p>:null}
           <p>Acompanhe status das simualações</p>
           <p><Link to="/home" className="App-link">Tela inicial</Link></p>
-          <p className="App-link" onClick={() => this.logout()}>
+          <p className="App-link" onClick={() => logout()}>
             Logout
           </p>
           <p id="configButton" className="App-link">
