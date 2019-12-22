@@ -21,7 +21,7 @@ const UpdateForm = (props) => {
 
       <div className="form-row">
         <label>DDD:</label>
-        <input className="short-input" name="phone_code" value={props.userUpdate.phone_code} onChange={props.handleInput}/>
+        <input className="short-input" name="phone_code" maxLength={2} value={props.userUpdate.phone_code} onChange={props.handleInput}/>
 
         <label>TELEFONE:</label>
         <input name="phone" value={props.userUpdate.phone} onChange={props.handleInput}/>
@@ -34,7 +34,7 @@ const UpdateForm = (props) => {
         </div>
 
         <label >CEP:</label>
-        <input className="short-input" name="postal_code" value={props.userUpdate.postal_code} onChange={props.handleInput}/>
+        <input className="short-input" name="postal_code" maxLength={8} value={props.userUpdate.postal_code} onChange={props.handleInput}/>
 
         <span onClick={() => props.searchCep()}>
           <SearchIcon />

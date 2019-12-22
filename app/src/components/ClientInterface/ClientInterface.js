@@ -25,8 +25,10 @@ class ClientInterface extends Component {
   }
 
   handleInput = (e) =>{
+    let values = this.state.userUpdate;
+
     this.setState({
-      userUpdate: {[e.target.name]: e.target.value},
+      userUpdate: {...values, [e.target.name]: e.target.value},
     })
   }
 
@@ -101,7 +103,7 @@ class ClientInterface extends Component {
   confirmUser = (type) => {
     this.callPopup("verificando...", false, true, true);
     const user = {
-      email: this.props.user.email,
+      email: this.props.state.user.email,
       password: this.state.password
     }
 
@@ -127,7 +129,7 @@ class ClientInterface extends Component {
   }
 
   removeUser = () => {
-    api.post('/Users/Delete', {email: this.props.user.email}).then(res => {
+    api.post('/Users/Delete', {email: this.props.state.user.email}).then(res => {
       console.log(res);
       this.callPopup("Conta removida!", false, true, false);
       logout();
@@ -140,7 +142,7 @@ class ClientInterface extends Component {
   }
 
   updateUser = () => {
-    api.post("/Users/Update",{email: this.props.user.email, newUser: this.state.userUpdate }).then(res => {
+    api.post("/Users/Update",{email: this.props.state.user.email, newUser: this.state.userUpdate }).then(res => {
       if(res.data.error === "Email já está cadastrado") this.callPopup("Este email já está cadastrado, tente outro email", true, true, false);
       else if(res.data.error){
         console.log(res.data.error);
@@ -215,6 +217,7 @@ class ClientInterface extends Component {
          text="Seus dados serão removidos permanentemente do banco de dados."
          st={st}
          handlePassword={this.handlePassword}
+         confirmUser={this.confirmUser}
          type="delete"/>
 
         <AuthConfirm
@@ -223,6 +226,7 @@ class ClientInterface extends Component {
          text="Seus dados serão alterados permanentemente do banco de dados."
          password={st.password}
          handlePassword={this.handlePassword}
+         confirmUser={this.confirmUser}
          delete="update"/>
 
       </div>
