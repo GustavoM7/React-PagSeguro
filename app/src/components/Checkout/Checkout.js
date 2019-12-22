@@ -108,7 +108,6 @@ class Checkout extends Component{
     this.setState({carrinho: Produtos});
     if(this.props.state.user.id){
       const user = this.props.state.user;
-      console.log(user);
       this.callPopup("Autenticado!", false, true, false);
       this.setState({
         name: user.name,
