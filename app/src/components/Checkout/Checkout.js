@@ -3,27 +3,29 @@ import Produtos from "../../service/Dados";
 import api from "../../service/Api";
 import {Link} from "react-router-dom";
 import Popup from '../Popup/Popup';
+import { connect } from "react-redux";
 
 class Checkout extends Component{
   state = {
     carrinho: [],
 
     //Dados do comprador:
-    name: "Gustavo Marques",
-    email: "c13823858083569199133@sandbox.pagseguro.com.br",
-    phoneAreaCode: "51",
-    phoneNumber: "88888888",
+    name: "",
+    email: "",
+    phoneAreaCode: "",
+    phoneNumber: "",
 
     //Dados do frete:
     type: 1,
-    street: "Rua teste",
-    number: "41",
-    complement: "Complemento teste",
-    district: "Bairro teste",
-    postalCode: "01452002",
-    city: "São Paulo",
-    state: "SP",
-    country: "BRA",
+    street: "",
+    number: "",
+    complement: "",
+    district: "",
+    postalCode: "",
+    city: "",
+    state: "",
+    country: "",
+    ref: Math.random() * 10000,
 
     //Popup para retornos
     popText: "",
@@ -61,61 +63,71 @@ class Checkout extends Component{
     const st = this.state;
 
     if(st.carrinho.length === 0) this.callPopup("O Carrinho está vazio...", true, true, false);
-    else if(st.name &&
-      st.email &&
-      st.phoneAreaCode &&
-      st.phoneNumber &&
-      st.street &&
-      st.number &&
-      st.district &&
-      st.postalCode &&
-      st.city &&
-      st.state &&
-      st.country){
+    else if(st.name && st.email && st.phoneAreaCode && st.phoneNumber && st.street && st.number &&st.district && st.postalCode && st.city && st.state && st.country){
 
-        let ref = Math.random() * 10000;
-
-        let comprador = {
-          name: st.name,
-          email: st.email,
-          phoneAreaCode: st.phoneAreaCode,
-          phoneNumber: st.phoneNumber,
-          ref: ref,
-        }
-
-        let frete = {
-          type: 1,
-          street: st.street,
-          number: st.number,
-          complement: st.complement,
-          district: st.district,
-          postalCode: st.postalCode,
-          city: st.city,
-          state: st.state,
-          country: st.country,
-        }
-
-        this.callPopup("Processando dados...", false, true, true);
-
-        let req = {carrinho: Produtos, comprador: comprador, frete: frete};
-
-        api.post("/pagseguro", req).then((res) => {
-          this.callPopup("Redirecionando...", false, true, true);
-          let redirectKey = res.data.checkout.code._text;
-          window.location.href = 'https://sandbox.pagseguro.uol.com.br/v2/checkout/payment.html?code='+redirectKey;
-
-        }).catch((e) => {
-          console.log(e);
-          this.callPopup("Erro inesperado!", true, true, false);
-
-        });
+      let comprador = {
+        name: st.name,
+        email: st.email,
+        phoneAreaCode: st.phoneAreaCode,
+        phoneNumber: st.phoneNumber,
+        ref: st.ref,
       }
 
-      else this.callPopup("Preencha todos os dados!", true, true, false);
+      let frete = {
+        type: 1,
+        street: st.street,
+        number: st.number,
+        complement: st.complement,
+        district: st.district,
+        postalCode: st.postalCode,
+        city: st.city,
+        state: st.state,
+        country: st.country,
+      }
+
+      this.callPopup("Processando dados...", false, true, true);
+
+      let req = {carrinho: Produtos, comprador: comprador, frete: frete};
+
+      api.post("/pagseguro", req).then((res) => {
+        this.callPopup("Redirecionando...", false, true, true);
+        let redirectKey = res.data.checkout.code._text;
+        window.location.href = 'https://sandbox.pagseguro.uol.com.br/v2/checkout/payment.html?code='+redirectKey;
+
+      }).catch((e) => {
+        console.log(e);
+        this.callPopup("Erro inesperado!", true, true, false);
+
+      });
+    }
+
+    else this.callPopup("Preencha todos os dados!", true, true, false);
   }
 
   componentDidMount(){
     this.setState({carrinho: Produtos});
+    if(this.props.state.user.id){
+      const user = this.props.state.user;
+      console.log(user);
+      this.callPopup("Autenticado!", false, true, false);
+      this.setState({
+        name: user.name,
+        email: user.email,
+        phoneAreaCode: user.phone_code,
+        phoneNumber: user.phone,
+        type: 1,
+        street: user.street,
+        number: user.number,
+        complement: user.complement,
+        district: user.district,
+        postalCode: user.postal_code,
+        city: user.city,
+        state: user.state,
+        country: user.country,
+        ref: user.id
+      });
+
+    }
   }
 
   render(){
@@ -199,4 +211,4 @@ class Checkout extends Component{
   }
 }
 
-export default Checkout;
+export default connect(state => ({state: state.user}))(Checkout);
