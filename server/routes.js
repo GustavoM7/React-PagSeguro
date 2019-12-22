@@ -16,5 +16,6 @@ routes.post('/Users/Authenticate', Users.authenticate);
 routes.post('/Users/Delete', Users.delete);
 routes.post('/Users/Update', Users.update);
 routes.post('/pagseguro', PagSeguro.sendCheckout);
+routes.post('/pagseguro/status', PagSeguro.receiveStatus);
 
 module.exports = routes;

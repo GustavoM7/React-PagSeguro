@@ -74,5 +74,11 @@ module.exports = {
         res.send(key);
       } 
     });
+  },
+
+  receiveStatus(req, res){
+    console.log("STATUS RECEBIDO!")
+    console.log(req.body);
+    res.send("vlw!")
   }
 }

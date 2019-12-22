@@ -12,6 +12,6 @@ app.use(routes);
 
 db.sequelize.sync();
   
-app.listen(3001, function () {
-  console.log("CORS permitida na porta 3001");
+app.listen(80, function () {
+  console.log("API em execução na porta 80");
 });

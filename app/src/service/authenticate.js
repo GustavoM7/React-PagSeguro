@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const authenticate = (token, sucess, error) =>{
   const api = axios.create({
-    baseURL: "http://localhost:3001",
+    baseURL: "http://localhost:80",
     headers: {'Authorization': token}
   });
 
