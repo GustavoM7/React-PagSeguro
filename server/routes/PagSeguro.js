@@ -17,7 +17,7 @@ module.exports = {
     //Configurando moeda e gerando referência da compra
     console.log("Configurando moeda referência de compra...");
     pag.currency('BRL');
-    pag.reference('teste5');
+    pag.reference(comprador.ref);
   
     console.log("Registrando produtos..")
     carrinho.map(produto => {
@@ -55,7 +55,7 @@ module.exports = {
      
     //Configuranto URLs de retorno e de notificação
     pag.setRedirectURL("http://localhost:3000");
-    pag.setNotificationURL("http://localhost:3000");
+    pag.setNotificationURL("http://localhost:80/pagseguro/status");
     
     //Enviando o xml ao pagseguro
     console.log("Recebendo chave para sessão de checkout de direcionamento");
