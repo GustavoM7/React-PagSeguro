@@ -93,7 +93,8 @@ module.exports = {
     }).then(res => {
       console.log("Resposta recebida!");
       resjson = convert.xml2json(res.data, {compact: true, spaces: 4});
-      console.log(resjson);
+      const data = JSON.parse(resjson)
+      console.log("Códgo de transação: " + data.transaction.code._text);
 
     }).catch(e => {
       console.log("Erro! " + e.message);
