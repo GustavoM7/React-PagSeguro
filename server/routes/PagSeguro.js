@@ -1,6 +1,7 @@
 const pagseguro = require('pagseguro');
 const convert = require('xml-js');
 const config = require('../globalconfig');
+const axios = require('axios');
 
 module.exports = {
   sendCheckout(req, res){
@@ -77,8 +78,27 @@ module.exports = {
   },
 
   receiveStatus(req, res){
-    console.log("STATUS RECEBIDO!")
-    console.log(req.body);
-    res.send("vlw!")
+    console.log("Notificação de mudança de status de compra recebido!");
+    const code = req.body.notificationCode;
+    console.log("Código: " + code);
+    res.send("recebido!");
+
+    console.log("Buscando dados da compra...");
+    const url = 'https://ws.sandbox.pagseguro.uol.com.br/v3/transactions/notifications/'+code+'?email='+config.PagSeguroConfig.email+'&token='+config.PagSeguroConfig.token;
+
+    axios({
+      method: 'get',
+      url: url,
+      
+    }).then(res => {
+      console.log("Resposta recebida!");
+      resjson = convert.xml2json(res.data, {compact: true, spaces: 4});
+      console.log(resjson);
+
+    }).catch(e => {
+      console.log("Erro! " + e.message);
+
+    })
+
   }
 }
