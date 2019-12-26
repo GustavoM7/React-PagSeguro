@@ -80,12 +80,6 @@ module.exports = db.sequelize.define(
     ShippingCost: {
       type: Sequelize.STRING,
     },
-    items_id: {
-      reference:{
-        model: Cart,
-        key: 'id',
-      }
-    },
     created: {
       type: Sequelize.DATE,
       defaultValue: Sequelize.NOW,
