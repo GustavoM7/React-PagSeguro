@@ -11,6 +11,7 @@ routes.get('/', Home.init);
 routes.get('/Users', Users.getAll);
 routes.get('/Correios/CEP/:cep', Correios.AdressGeter);
 routes.get('/Items', Items.getAll);
+routes.get('/Itemsteste', Items.create);
 
 routes.post('/Users', Users.create);
 routes.post('/Users/Login', Users.login);

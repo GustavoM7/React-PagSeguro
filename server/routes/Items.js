@@ -18,9 +18,10 @@ module.exports = {
 
   create(req, res){
     const newItem = {
-      description: req.body.description,
-      amount: req.body.amout,
-      weight: req.body.weight,
+        description: "Primeiro produto",
+        amount: "10.00",
+        quantity: 3,
+        weight: "10"
     }
 
     console.log("Registrando novo produto...");
