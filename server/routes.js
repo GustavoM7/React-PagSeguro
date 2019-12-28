@@ -12,6 +12,8 @@ routes.get('/Users', Users.getAll);
 routes.get('/Correios/CEP/:cep', Correios.AdressGeter);
 routes.get('/Items', Items.getAll);
 routes.get('/Items/:id', Items.get);
+routes.get('/Transactions', PagSeguro.getAllTransaction);
+routes.get('/Transactions/:code', PagSeguro.getTransaction);
 
 routes.post('/Users', Users.create);
 routes.post('/Users/Login', Users.login);

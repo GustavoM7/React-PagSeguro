@@ -2,6 +2,7 @@ const pagseguro = require('pagseguro');
 const convert = require('xml-js');
 const config = require('../globalconfig');
 const axios = require('axios');
+const Transaction = require('../models/Transation');
 
 module.exports = {
   sendCheckout(req, res){
@@ -75,6 +76,42 @@ module.exports = {
         res.send(key);
       } 
     });
+  },
+
+  getAllTransaction(req, res){
+    console.log("Buscando transações cadastradas...");
+    Transaction.findAll().then(trans => {
+      console.log("Uma lista de transações foi retornada!");
+      res.send(trans);
+
+    }).catch(e => {
+      console.log("Erro inesperado...");
+      console.log(e);
+      res.sendStatos(500);
+
+    });
+  },
+
+  getTransaction(req, res){
+    const searchedCode = req.params.code;
+    console.log("Transação requisitada, código: " + searchedCode);
+
+    Transaction.findOne({where: {id: searchedId}}).then(trans => {
+      if(!trans){
+        console.log("Transação não encontrada...");
+        res.sendStatus(404);
+      }
+
+      else {
+        console.log("Transação retornada retornado");
+        res.send(trans);
+        
+      }
+
+    }).catch(e => {
+      res.sendStatus(500);
+      console.log(e);
+    })
   },
 
   receiveStatus(req, res){
