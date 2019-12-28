@@ -16,6 +16,27 @@ module.exports = {
 
   },
 
+  get(req, res){
+    const searchedId = req.params.id;
+    console.log("Produto requisitado, id: " + searchedId);
+
+    Item.findOne({where: {id: searchedId}}).then(item => {
+      if(!item){
+        console.log("Produto não encontrado...");
+        res.sendStatus(404);
+      } 
+      else {
+        console.log("Produto retornado");
+        res.send(item);
+        
+      }
+
+    }).catch(e => {
+      res.sendStatus(500);
+      console.log(e);
+    })
+  },
+
   create(req, res){
     const newItem = {
       description: req.body.description,
