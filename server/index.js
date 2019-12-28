@@ -12,8 +12,8 @@ app.use(routes);
 
 db.sequelize.sync();
   
-app.listen(80, function () {
+app.listen(8080, function () {
   console.log("########################################");
-  console.log("API em execução em _http://localhost:80_");
+  console.log("API em execução em _http://localhost:8080_");
   console.log("########################################");
 });

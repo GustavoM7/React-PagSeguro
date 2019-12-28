@@ -56,7 +56,7 @@ module.exports = {
      
     //Configuranto URLs de retorno e de notificação
     pag.setRedirectURL("http://localhost:3000");
-    pag.setNotificationURL("http://localhost:80/pagseguro/status");
+    pag.setNotificationURL("http://localhost:8080/pagseguro/status");
     
     //Enviando o xml ao pagseguro
     console.log("Recebendo chave para sessão de checkout de direcionamento");
