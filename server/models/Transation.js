@@ -41,7 +41,7 @@ module.exports = db.sequelize.define(
     installmentCount: {
       type: Sequelize.INTEGER,
     },
-    itemsCount: {
+    itemCount: {
       type: Sequelize.INTEGER,
     },
     senderName: {
@@ -50,34 +50,37 @@ module.exports = db.sequelize.define(
     senderEmail: {
       type: Sequelize.STRING,
     },
-    senderPhone: {
+    senderPhoneAreaCode: {
       type: Sequelize.STRING,
     },
-    ShippingStreet: {
+    senderPhoneNumber: {
       type: Sequelize.STRING,
     },
-    ShippingNumber: {
+    shippingStreet: {
       type: Sequelize.STRING,
     },
-    ShippingComprement: {
+    shippingNumber: {
       type: Sequelize.STRING,
     },
-    ShippingDistrict: {
+    shippingComprement: {
       type: Sequelize.STRING,
     },
-    ShippingPostalCode: {
+    shippingDistrict: {
       type: Sequelize.STRING,
     },
-    ShippingCity: {
+    shippingPostalCode: {
       type: Sequelize.STRING,
     },
-    ShippingState: {
+    shippingCity: {
       type: Sequelize.STRING,
     },
-    ShippingCountry: {
+    shippingState: {
       type: Sequelize.STRING,
     },
-    ShippingCost: {
+    shippingCountry: {
+      type: Sequelize.STRING,
+    },
+    shippingCost: {
       type: Sequelize.STRING,
     },
     created: {

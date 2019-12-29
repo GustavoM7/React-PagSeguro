@@ -96,7 +96,7 @@ module.exports = {
     const searchedCode = req.params.code;
     console.log("Transação requisitada, código: " + searchedCode);
 
-    Transaction.findOne({where: {id: searchedId}}).then(trans => {
+    Transaction.findOne({where: {code: searchedCode}}).then(trans => {
       if(!trans){
         console.log("Transação não encontrada...");
         res.sendStatus(404);
@@ -111,30 +111,101 @@ module.exports = {
     }).catch(e => {
       res.sendStatus(500);
       console.log(e);
-    })
+    });
   },
 
   receiveStatus(req, res){
     console.log("Notificação de mudança de status de compra recebido!");
     const code = req.body.notificationCode;
+    
     console.log("Código: " + code);
-    res.send("recebido!");
-
     console.log("Buscando dados da compra...");
+
     const url = 'https://ws.sandbox.pagseguro.uol.com.br/v3/transactions/notifications/'+code+'?email='+config.PagSeguroConfig.email+'&token='+config.PagSeguroConfig.token;
 
     axios({
       method: 'get',
       url: url,
       
-    }).then(res => {
+    }).then(ret => {
       console.log("Resposta recebida!");
-      resjson = convert.xml2json(res.data, {compact: true, spaces: 4});
-      const data = JSON.parse(resjson)
-      console.log("Códgo de transação: " + data.transaction.code._text);
+      resjson = convert.xml2json(ret.data, {compact: true, spaces: 4});
+      const data = JSON.parse(resjson);
+
+      const transData = {
+        code: data.transaction.code._text,
+        date: data.transaction.date._text,
+        reference: data.transaction.reference._text,
+        status: data.transaction.status._text,
+        paymentMethod: data.transaction.paymentMethod.type._text,
+        grossAmount: data.transaction.grossAmount._text,
+        discountAmount: data.transaction.discountAmount._text,
+        intermediationRateAmount: data.transaction.creditorFees.intermediationRateAmount._text,
+        intermediationFeeAmount: data.transaction.creditorFees.intermediationFeeAmount._text,
+        netAmount: data.transaction.netAmount._text,
+        extraAmount: data.transaction.extraAmount._text,
+        installmentCount: data.transaction.installmentCount._text,
+        itemCount: data.transaction.itemCount._text,
+        senderName: data.transaction.sender.name._text,
+        senderEmail: data.transaction.sender.email._text,
+        senderPhoneAreaCode: data.transaction.sender.phone.areaCode._text,
+        senderPhoneNumber: data.transaction.sender.phone.number._text,
+        shippingStreet: data.transaction.shipping.address.street._text,
+        shippingNumber: data.transaction.shipping.address.number._text,
+        shippingComplement: data.transaction.shipping.address.complement._text,
+        shippingDistrict: data.transaction.shipping.address.district._text,
+        shippingCity: data.transaction.shipping.address.city._text,
+        shippingState: data.transaction.shipping.address.state._text,
+        shippingCountry: data.transaction.shipping.address.country._text,
+        shippingPostalCode: data.transaction.shipping.address.postalCode._text,
+        shippingCost: data.transaction.shipping.cost._text,
+      }
+
+      console.log("Códgo de transação: " + transData.code);
+
+      //Verificando se transação já existe
+      Transaction.findOne({where: {code: transData.code}}).then(trans => {
+        if(trans){
+          console.log("Atualizando transação no banco de dados...");
+          Transaction.update(transData, {where: {code: transData.code}}).then(()=>{
+            console.log("Transação atualizada!");
+            res.send("Transação atualizada!");
+
+          }).catch(e => {
+            console.log("Erro inesperado ao tentar atualizar transação!");
+            console.log(e);
+            res.sendStatus(500);
+
+          })
+
+        }
+  
+        else {
+          console.log("Registrando nova transação...");
+          Transaction.create(transData).then(t => {
+            console.log("Nova transação registrada!");
+            res.send("Transação registrada!");
+
+          }).catch(e => {
+            console.log("Erro inesperado ao tentar registrar trannsação...");
+            console.log(e);
+            res.sendStatus(500);
+
+          })
+          
+        }
+  
+      }).catch(e => {
+        console.log("Erro inesperado ao tentar buscar código de transação...");
+        console.log(e);
+        res.sendStatus(500);
+
+      });
 
     }).catch(e => {
-      console.log("Erro! " + e.message);
+      console.log("Erro inesperado ao tentar se conectar com api PagSeguro");
+      console.log(e);
+      res.sendStatus(500);
 
     })
 

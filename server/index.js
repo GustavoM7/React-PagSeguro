@@ -14,6 +14,6 @@ db.sequelize.sync();
   
 app.listen(8080, function () {
   console.log("########################################");
-  console.log("API em execução em _http://localhost:8080_");
+  console.log("API em execução em >> http://localhost:8080 ");
   console.log("########################################");
 });
