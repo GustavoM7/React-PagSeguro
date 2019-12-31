@@ -14,19 +14,19 @@ module.exports = db.sequelize.define(
       type: Sequelize.STRING,
     },
 
-    item_id: {
+    itemId: {
       type: Sequelize.INTEGER,
     },
 
-    item_quantity: {
+    itemQuantity: {
       type: Sequelize.INTEGER,
     },
 
-    item_description: {
+    itemDescription: {
       type: Sequelize.STRING,
     },
 
-    item_amount: {
+    itemAmount: {
       type: Sequelize.STRING,
     }
     

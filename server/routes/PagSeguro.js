@@ -2,7 +2,9 @@ const pagseguro = require('pagseguro');
 const convert = require('xml-js');
 const config = require('../globalconfig');
 const axios = require('axios');
-const Transaction = require('../models/Transation');
+
+const Transaction = require('../models/Transaction');
+const TransactionRegister = require('../models/TransactionRegister');
 
 module.exports = {
   sendCheckout(req, res){
@@ -21,7 +23,7 @@ module.exports = {
     pag.currency('BRL');
     pag.reference(comprador.ref);
   
-    console.log("Registrando produtos..")
+    console.log("Registrando produtos..");
     carrinho.map(produto => {
       return pag.addItem({
           id: produto.id,
@@ -212,8 +214,26 @@ module.exports = {
             console.log("Nova transação registrada!");
             console.log("Registrando itens...");
 
+            let newRegister;
+
             items.forEach(i => {
-              console.log(i);
+              newRegister = {
+                transactionCode: t.code,
+                itemId: i.id._text,
+                itemQuantity: i.quantity._text,
+                itemDescription: i.description._text,
+                itemAmount: i.amount._text,
+              }
+
+              TransactionRegister.create(newRegister).then(r => {
+                console.log("Novo registro criado, id: ", r.id);
+
+              }).catch(e => {
+                console.log("falha ao tentar criar registro de itens de transação!");
+                console.log(e);
+
+              })
+
             });
 
             res.send("Transação registrada!");

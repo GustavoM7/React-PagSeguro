@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 const db = require('../localStorage/db.js');
 
 module.exports = db.sequelize.define(
-  'transation',
+  'transaction',
   {
     code: {
       type: Sequelize.STRING,
