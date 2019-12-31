@@ -16,6 +16,7 @@ routes.get('/Items/:id', Items.get);
 routes.get('/Transactions', PagSeguro.getAllTransaction);
 routes.get('/Transactions/:code', PagSeguro.getTransaction);
 routes.get('/Transactions/:user', PagSeguro.getUserTransaction);
+routes.get('/Transactions/Items/:code', PagSeguro.getTransactionRegister);
 //routes.get('/ResetTrans', ResetTransaction.reset);
 
 routes.post('/Users', Users.create);

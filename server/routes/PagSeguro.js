@@ -127,13 +127,38 @@ module.exports = {
       }
 
       else {
-        console.log("Lista de transações retornada!");
+        console.log("Lista de itens retornada!");
         res.send(trans);
         
       }
 
     }).catch(e => {
       res.sendStatus(500);
+      console.log(e);
+
+    });
+
+  },
+
+  getTransactionRegister(req, res){
+    const code = req.params.code;
+    console.log("Buscando itens da transação de cógido " + code);
+
+    TransactionRegister.findAll({where: {transactionCode: code}}).then(itens => {
+      if(!itens){
+        console.log("Nenhuma transação encontrada...");
+        res.sendStatus(404);
+      }
+
+      else {
+        console.log("Lista de transações retornada!");
+        res.send(itens);
+        
+      }
+
+    }).catch(e => {
+      res.sendStatus(500);
+      console.log("Erro inesperado...")
       console.log(e);
 
     });

@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 const db = require('../localStorage/db.js');
 
 module.exports = db.sequelize.define(
-  'transationRegister',
+  'transactionRegister',
   {
     id: {
       type: Sequelize.INTEGER,
@@ -10,7 +10,7 @@ module.exports = db.sequelize.define(
       autoIncrement: true,
     },
 
-    transationCode: {
+    transactionCode: {
       type: Sequelize.STRING,
     },
 

@@ -1,5 +1,5 @@
-const Transaction = require('../models/Transation');
-const TransactionRegister = require('../models/TransationRegister');
+const Transaction = require('../models/Transaction');
+const TransactionRegister = require('../models/TransactionRegister');
 
 module.exports = {
   reset(req, res){
