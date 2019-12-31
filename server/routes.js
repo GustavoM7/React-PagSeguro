@@ -13,7 +13,7 @@ routes.get('/Users', Users.getAll);
 routes.get('/Correios/CEP/:cep', Correios.AdressGeter);
 routes.get('/Items', Items.getAll);
 routes.get('/Items/:id', Items.get);
-routes.get('/Transactions', PagSeguro.getAllTransaction);
+routes.get('/Transactions', PagSeguro.getAllTransactions);
 routes.get('/Transactions/:code', PagSeguro.getTransaction);
 routes.get('/Transactions/:user', PagSeguro.getUserTransaction);
 routes.get('/Transactions/Items/:code', PagSeguro.getTransactionRegister);

@@ -6,8 +6,53 @@ const axios = require('axios');
 const Transaction = require('../models/Transaction');
 const TransactionRegister = require('../models/TransactionRegister');
 
+/*
+  Métodos exportados:
+  - sendCheckout: recebe dados de uma compra e retorna chave para redirecionamento de checkout
+  - receiveStatus: recebe cógido de notificação da PagSeguro, o código é usado para consultar uma nova transação cadastrada ou alterada
+  - getAllTrasactions: busca todas as transações cadastradas no banco de dados
+  - getTransaction: busca os dados de uma transação específica a partir do seu código (/:code)
+  - getUserTransaction: busca todas as transações realizadas por um usuário através da referência
+  - getTransactionRegister: busca todos os registros de itens de uma transação através de seu código (/:code)
+*/
+
 module.exports = {
   sendCheckout(req, res){
+
+    //Estrutura da requisição
+    /*
+    {
+      carrinho: [{
+        id: '0',
+        description: 'abc',
+        amount: '00.00',
+        quantity: 0,
+        weight: '00'
+      }],
+
+      comprador: {
+        name: 'abc',
+        email: 'abc@dominio.com',
+        phoneAreaCode: '00',
+        phoneNumber: '00000000'
+        ref: 'XX'
+      },
+
+      frete = {
+        type: 1,
+        street: 'abc',
+        number: 'abc',
+        complement: 'abc',
+        district: 'abc',
+        postalCode: 'abc',
+        city: 'abc',
+        state: 'abc',
+        country: BR,
+      }
+    }
+
+    */
+
     let carrinho = req.body.carrinho;
     let comprador = req.body.comprador;
     let frete = req.body.frete;
@@ -16,9 +61,17 @@ module.exports = {
     
     console.log("Configurando dados do vendedor...")
     //Configurações do vendedor
+    /*
+      {
+        email: ' ',
+        token: ' ', //Token deve ser gerado na plataforma da PagSeguro e guardado de forma segura
+        mode : 'sandbox', //Modo de teste, deve ser alterado para produção
+      }
+    */
+
     pag = new pagseguro(config.PagSeguroConfig);
   
-    //Configurando moeda e gerando referência da compra
+    //Configurando moeda e referência da compra usanda para chaves extrangeiras
     console.log("Configurando moeda referência de compra...");
     pag.currency('BRL');
     pag.reference(comprador.ref);
@@ -61,7 +114,6 @@ module.exports = {
     pag.setRedirectURL("http://localhost:3000");
     pag.setNotificationURL("http://localhost:8080/pagseguro/status");
     
-    //Enviando o xml ao pagseguro
     console.log("Recebendo chave para sessão de checkout de direcionamento");
   
     pag.send(function(err, pgres){
@@ -70,18 +122,23 @@ module.exports = {
         //Convertendo resposta xml para json
         console.log("ERRO!")
         res.send(convert.xml2json(err, {compact: true, spaces: 4}));
+
       } else {
         let key = convert.xml2json(pgres, {compact: true, spaces: 4});
         console.log("chave gerada:");
         let keyobj = JSON.parse(key);
-        console.log(keyobj.checkout.code._text)
+        console.log(keyobj.checkout.code._text);
+
+        //Retorrnando uma chave para a requisição
+        //A chave deve ser usada na url para acessar um link de checkout
+        //'https://sandbox.pagseguro.uol.com.br/v2/checkout/payment.html?code='+key (sandbox)
         res.send(key);
       } 
     });
   },
 
-  getAllTransaction(req, res){
-    console.log("Buscando transações cadastradas...");
+  getAllTransactions(req, res){
+    console.log("Buscando todas as transações cadastradas...");
     Transaction.findAll().then(trans => {
       console.log("Uma lista de transações foi retornada!");
       res.send(trans);
@@ -166,6 +223,7 @@ module.exports = {
   },
 
   receiveStatus(req, res){
+    //POST será realizado pela plataforma da PagSeguro
     console.log("Notificação de mudança de status de compra recebido!");
     const code = req.body.notificationCode;
     
@@ -174,6 +232,7 @@ module.exports = {
 
     const url = 'https://ws.sandbox.pagseguro.uol.com.br/v3/transactions/notifications/'+code+'?email='+config.PagSeguroConfig.email+'&token='+config.PagSeguroConfig.token;
 
+    //Buscando dados da transação realizada a partir do código recebido da PagSeguros
     axios({
       method: 'get',
       url: url,
@@ -188,7 +247,23 @@ module.exports = {
         date: data.transaction.date._text,
         reference: data.transaction.reference._text,
         status: data.transaction.status._text,
+        /*
+          1 = Aguardando pagamento
+          2 = Em Análise
+          3 = Paga
+          4 = Disponível (saque pode ser feito)
+          5 = Em disputa (comprador reinvidicou reembolso ou devolução com a PagSeguro)
+          6 = Devolvida
+          7 = Cancelada
+          8 = Debitada
+          9 = Retenção temporária
+        */
         paymentMethod: data.transaction.paymentMethod.type._text,
+        /*
+          1 = Cartão de Crédito
+          2 = Boleto
+          3 = Débito online
+        */
         grossAmount: data.transaction.grossAmount._text,
         discountAmount: data.transaction.discountAmount._text,
         intermediationRateAmount: data.transaction.creditorFees.intermediationRateAmount._text,
@@ -216,7 +291,8 @@ module.exports = {
 
       console.log("Códgo de transação: " + transData.code);
 
-      //Verificando se transação já existe
+      //Verificando se transação já está cadastrada no bd
+      //Caso ela já exista, significa que seu status foi alterado
       Transaction.findOne({where: {code: transData.code}}).then(trans => {
         if(trans){
           console.log("Atualizando transação no banco de dados...");
