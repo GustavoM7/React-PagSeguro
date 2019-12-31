@@ -114,6 +114,30 @@ module.exports = {
     });
   },
 
+  getUserTransaction(req, res){
+    const userId = req.params.user;
+    console.log("Buscando transações realizadas pelo usuário de id " + userId);
+
+    Transaction.findAll({where: {reference: userId}}).then(trans => {
+      if(!trans){
+        console.log("Nenhuma transação encontrada...");
+        res.sendStatus(404);
+      }
+
+      else {
+        console.log("Lista de transações retornada!");
+        res.send(trans);
+        
+      }
+
+    }).catch(e => {
+      res.sendStatus(500);
+      console.log(e);
+
+    });
+
+  },
+
   receiveStatus(req, res){
     console.log("Notificação de mudança de status de compra recebido!");
     const code = req.body.notificationCode;

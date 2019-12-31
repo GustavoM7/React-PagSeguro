@@ -14,15 +14,14 @@ routes.get('/Items', Items.getAll);
 routes.get('/Items/:id', Items.get);
 routes.get('/Transactions', PagSeguro.getAllTransaction);
 routes.get('/Transactions/:code', PagSeguro.getTransaction);
+routes.get('/Transactions/:user', PagSeguro.getUserTransaction);
 
 routes.post('/Users', Users.create);
 routes.post('/Users/Login', Users.login);
 routes.post('/Users/Authenticate', Users.authenticate);
 routes.post('/Users/Delete', Users.delete);
 routes.post('/Users/Update', Users.update);
-
 routes.post('/Items', Items.create);
-
 routes.post('/pagseguro', PagSeguro.sendCheckout);
 routes.post('/pagseguro/status', PagSeguro.receiveStatus);
 
