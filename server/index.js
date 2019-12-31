@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(routes);
 
-db.sequelize.sync();
+db.sequelize.sync({force: true});
   
 app.listen(8080, function () {
   console.log("########################################");

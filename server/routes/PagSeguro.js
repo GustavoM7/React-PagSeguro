@@ -185,6 +185,8 @@ module.exports = {
         shippingCost: data.transaction.shipping.cost._text,
       }
 
+      const items = data.transaction.items.item;
+
       console.log("Códgo de transação: " + transData.code);
 
       //Verificando se transação já existe
@@ -208,6 +210,12 @@ module.exports = {
           console.log("Registrando nova transação...");
           Transaction.create(transData).then(t => {
             console.log("Nova transação registrada!");
+            console.log("Registrando itens...");
+
+            items.forEach(i => {
+              console.log(i);
+            });
+
             res.send("Transação registrada!");
 
           }).catch(e => {

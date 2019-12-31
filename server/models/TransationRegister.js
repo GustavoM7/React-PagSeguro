@@ -1,9 +1,6 @@
 const Sequelize = require('sequelize');
 const db = require('../localStorage/db.js');
 
-const Transation = require('./Transation');
-const Item = require('./Item');
-
 module.exports = db.sequelize.define(
   'transationRegister',
   {
@@ -14,21 +11,23 @@ module.exports = db.sequelize.define(
     },
 
     transationCode: {
-      reference: {
-        model: Transation,
-        key: 'code'
-      }
+      type: Sequelize.STRING,
     },
 
     item_id: {
-      reference: {
-        model: Item,
-        key: 'id'
-      }
+      type: Sequelize.INTEGER,
     },
 
     item_quantity: {
       type: Sequelize.INTEGER,
+    },
+
+    item_description: {
+      type: Sequelize.STRING,
+    },
+
+    item_amount: {
+      type: Sequelize.STRING,
     }
     
   },

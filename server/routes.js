@@ -6,6 +6,7 @@ const Users = require('./routes/Users.js');
 const Items = require('./routes/Items');
 const PagSeguro = require('./routes/PagSeguro.js');
 const Correios = require('./routes/Correios');
+//const ResetTransaction = require('./routes/ResetTransactions');
 
 routes.get('/', Home.init);
 routes.get('/Users', Users.getAll);
@@ -15,6 +16,7 @@ routes.get('/Items/:id', Items.get);
 routes.get('/Transactions', PagSeguro.getAllTransaction);
 routes.get('/Transactions/:code', PagSeguro.getTransaction);
 routes.get('/Transactions/:user', PagSeguro.getUserTransaction);
+//routes.get('/ResetTrans', ResetTransaction.reset);
 
 routes.post('/Users', Users.create);
 routes.post('/Users/Login', Users.login);
