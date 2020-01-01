@@ -1,5 +1,16 @@
 const axios = require("axios");
 
+/*
+ - AdressGeter: get em um cep (/:cep), e retorna um objeto com dados do endereço
+ retorno:
+ {
+    district: "", //bairro
+    city: "", //cidade
+    state: "", //estado
+    country: "BR",             
+ }
+*/
+
 module.exports = {
   AdressGeter(req, res){
     const cep = req.params.cep;
