@@ -50,9 +50,11 @@ module.exports = {
   },
 
   getShippingPrice(req, res){
-    const correios = new Correios();
 
-    const args = {
+    console.log("consulta de frete solicitada...")
+    let correios = new Correios();
+
+    let args = {
       nCdEmpresa: config.CorreiosConfig.nCdEmpresa,
       sDsSenha: config.CorreiosConfig.sDsSenha,
       nCdServico: config.CorreiosConfig.nCdServico,
@@ -64,14 +66,17 @@ module.exports = {
       nVlComprimento: req.body.comprimento,
       nVlAltura: req.body.altura,
       nVlLargura: req.body.largura,
-      nVlDiametro: req.body.diamentro,
+      nVlDiametro: req.body.diametro,
     }
 
-    correios.calcPreco(args).then(result => {
-      console.log(result);
+    correios.calcPrecoPrazo(args).then(result => {
+      console.log("Consulta realizada com sucesso");
+      res.send(result);
 
     }).catch(error => {
+      console.log("Erro inesperado...");
       console.log(error);
+      res.sendStatus(500);
       
     });
 

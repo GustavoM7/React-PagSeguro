@@ -27,5 +27,6 @@ routes.post('/Users/Update', Users.update);
 routes.post('/Items', Items.create);
 routes.post('/pagseguro', PagSeguro.sendCheckout);
 routes.post('/pagseguro/status', PagSeguro.receiveStatus);
+routes.post('/Correios/Frete', Correios.getShippingPrice);
 
 module.exports = routes;
