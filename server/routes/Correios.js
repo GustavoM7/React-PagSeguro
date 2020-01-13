@@ -1,10 +1,12 @@
 const axios = require("axios");
+const Correios = require("node-correios");
+const config = require("../globalconfig");
 
 /*
  - AdressGeter: get em um cep (/:cep), e retorna um objeto com dados do endereço
  retorno:
  {
-    district: "", //bairro
+    district: "", //bairroc
     city: "", //cidade
     state: "", //estado
     country: "BR",             
@@ -46,4 +48,32 @@ module.exports = {
     }
     
   },
+
+  getShippingPrice(req, res){
+    const correios = new Correios();
+
+    const args = {
+      nCdEmpresa: config.CorreiosConfig.nCdEmpresa,
+      sDsSenha: config.CorreiosConfig.sDsSenha,
+      nCdServico: config.CorreiosConfig.nCdServico,
+      sCepOrigem: config.CorreiosConfig.sCepOrigem,
+
+      sCepDestino: req.body.cep,
+      nVlPeso: req.body.peso,
+      nCdFormato: req.body.formato,
+      nVlComprimento: req.body.comprimento,
+      nVlAltura: req.body.altura,
+      nVlLargura: req.body.largura,
+      nVlDiametro: req.body.diamentro,
+    }
+
+    correios.calcPreco(args).then(result => {
+      console.log(result);
+
+    }).catch(error => {
+      console.log(error);
+      
+    });
+
+  }
 }
